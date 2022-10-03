@@ -21,7 +21,7 @@ const HomePage: React.FC<Props> = () => {
         <Flex
           align="center"
           direction={["column", "row"]}
-          height={["auto", "calc(100vh - 96px)"]}
+          height={["auto", "calc(100vh - 86px)"]}
           justify={["center", "space-between"]}
           position="relative"
           width="100%"
@@ -33,14 +33,20 @@ const HomePage: React.FC<Props> = () => {
             spacing="24px"
             zIndex="9"
           >
-            <Heading size="3xl">Understand our rapidly changing world</Heading>
+            <Heading
+              size="3xl"
+              bgClip="text"
+              bgGradient="linear(to-r, white, blue.100)"
+            >
+              Understand our rapidly changing world
+            </Heading>
             <Text fontSize={["lg", "xl"]}>
               Gain insights into the health of agricultural land, conservation
               areas, and remote ecosystems with near real-time land cover
               classification.
             </Text>
             <Button
-              colorScheme="orange"
+              colorScheme="whiteAlpha"
               variant="outline"
               width={["100%", "auto"]}
             >
@@ -52,13 +58,13 @@ const HomePage: React.FC<Props> = () => {
             position={["static", "absolute"]}
             right={-5}
             zIndex={0}
-            w="550px"
+            w={["600px", "800px"]}
           >
             <Image src={Globe} alt="testing globe" />
           </Flex>
         </Flex>
-        <Flex align="center" justify="center" h="500px">
-          <Box>Hey there!</Box>
+        <Flex align="center" justify="center" h="0px" w="100%">
+          <Box></Box>
         </Flex>
       </VStack>
     </LayoutPublic>
