@@ -16,7 +16,6 @@ const theme = {
   styles: {
     global: (props) => ({
       "html, body": {
-        height: "100vh",
         margin: 0,
         padding: 0,
       },
@@ -24,6 +23,8 @@ const theme = {
         background: props.theme.colors.background,
         color: "white",
         minHeight: "100vh",
+        minWidth: "320px",
+        width: "100%",
         "-ms-overflow-style": "none",
         "scrollbar-width": "none",
       },
