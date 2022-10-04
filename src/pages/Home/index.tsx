@@ -71,7 +71,8 @@ const HomePage: React.FC<Props> = () => {
               position={["static", "absolute"]}
               right={-5}
               zIndex={0}
-              w={["600px", "800px"]}
+              w="60%"
+              minW="600px"
             >
               <Image src={Globe} alt="testing globe" />
             </Flex>
