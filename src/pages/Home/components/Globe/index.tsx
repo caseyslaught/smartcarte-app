@@ -1,6 +1,5 @@
-import React, { MutableRefObject, useEffect, useRef, useState } from "react";
-//import Map, { AttributionControl, MapRef } from "react-map-gl";
-import mapboxgl, { Map } from "mapbox-gl"; // or "const mapboxgl = require('mapbox-gl');"
+import React, { MutableRefObject, useEffect, useRef } from "react";
+import mapboxgl, { Map } from "mapbox-gl";
 import { Box } from "@chakra-ui/react";
 
 const MAPBOX_TOKEN = process.env.REACT_APP_MAPBOX_TOKEN;
@@ -15,13 +14,13 @@ const initialView = {
 };
 
 const Globe: React.FC<Props> = () => {
-  const [userInteracting, setUserInteracting] = useState(false);
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<Map>(null) as MutableRefObject<Map>;
 
   // this not working super well...
   function rotateGlobe() {
-    if (map.current && !userInteracting) {
+    // && !userInteracting
+    if (map.current) {
       console.log("here");
       const center = map.current.getCenter();
       center.lng -= 2;
@@ -32,10 +31,6 @@ const Globe: React.FC<Props> = () => {
       });
     }
   }
-
-  useEffect(() => {
-    console.log("userInteracting", userInteracting);
-  }, [userInteracting]);
 
   // initialize Map
   useEffect(() => {
