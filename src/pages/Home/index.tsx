@@ -23,8 +23,11 @@ const HomePage: React.FC<Props> = () => {
             align="center"
             direction={["column", "row"]}
             height={["auto", "calc(100vh - 86px)"]}
+            minHeight="680px"
             justify={["center", "space-between"]}
             position="relative"
+            px="1em"
+            maxW="8xl"
             width="100%"
           >
             <VStack
@@ -60,20 +63,25 @@ const HomePage: React.FC<Props> = () => {
             </VStack>
 
             <Flex
+              align="center"
+              justify="center"
               position={["static", "absolute"]}
-              right={-10}
-              bottom={-5}
+              right={0}
+              bottom={0}
               zIndex={0}
               height={["auto", "100%"]}
-              width="70%"
-              minHeight="650px"
-              minWidth="650px"
               overflow="visible"
             >
               <Globe />
             </Flex>
           </Flex>
-          <Flex align="center" justify="center" h="100px" w="100%">
+          <Flex
+            align="center"
+            justify="center"
+            h="300px"
+            w="100%"
+            background="backgroundLight"
+          >
             <Box></Box>
           </Flex>
         </VStack>

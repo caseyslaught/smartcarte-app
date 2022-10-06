@@ -41,7 +41,9 @@ const Globe: React.FC<Props> = () => {
   useEffect(() => {
     if (map.current || !mapContainer.current) return;
     map.current = new mapboxgl.Map({
+      attributionControl: false,
       container: mapContainer.current,
+      interactive: false,
       style: "mapbox://styles/mapbox/satellite-v9",
       center: [initialView.lng, initialView.lat],
       projection: { name: "globe" },
@@ -52,8 +54,8 @@ const Globe: React.FC<Props> = () => {
       map.current.setFog({
         color: "rgba(59, 137, 196, 0.8)",
         // @ts-ignore
-        "high-color": "rgba(106, 187, 222, .5)",
-        "horizon-blend": 0.012,
+        "high-color": "rgba(106, 187, 222, .3)",
+        "horizon-blend": 0.01,
         // @ts-ignore
         "space-color": "rgba(0, 0, 0, 0)",
         "star-intensity": 0,
@@ -87,16 +89,7 @@ const Globe: React.FC<Props> = () => {
     });
   });
 
-  return (
-    <Box
-      ref={mapContainer}
-      h="100%"
-      w="100%"
-      minH="640px"
-      minW="640px"
-      overflow="visible"
-    ></Box>
-  );
+  return <Box ref={mapContainer} h="700px" w="700px" overflow="visible"></Box>;
 };
 
 export default Globe;

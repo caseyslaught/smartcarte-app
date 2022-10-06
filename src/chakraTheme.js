@@ -10,6 +10,7 @@ const theme = {
   colors: {
     accent: "#C18000",
     background: "#303030",
+    backgroundLight: "#474a4d",
   },
   fontSizes: {},
   layout: {},
