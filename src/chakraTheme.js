@@ -34,6 +34,9 @@ const theme = {
       "#root, .App": {
         height: "100%",
       },
+      ".mapboxgl-ctrl-logo": {
+        display: "none !important",
+      },
     }),
   },
 };

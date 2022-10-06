@@ -1,17 +1,9 @@
 import React from "react";
-import {
-  Box,
-  Button,
-  Flex,
-  Heading,
-  Image,
-  Text,
-  VStack,
-} from "@chakra-ui/react";
-import Globe from "../../assets/images/globe.png";
+import { Box, Button, Flex, Heading, Text, VStack } from "@chakra-ui/react";
 
 import LayoutPublic from "../../layouts/LayoutPublic";
 
+import Globe from "./components/Globe";
 import WaitlistModalForm from "./components/WaitlistModalForm";
 
 interface Props {}
@@ -26,7 +18,7 @@ const HomePage: React.FC<Props> = () => {
         setIsModalOpen={setIsWaitlistOpen}
       />
       <LayoutPublic>
-        <VStack>
+        <VStack spacing={0}>
           <Flex
             align="center"
             direction={["column", "row"]}
@@ -38,21 +30,21 @@ const HomePage: React.FC<Props> = () => {
             <VStack
               align={["center", "flex-start"]}
               justify={["center", "space-between"]}
-              maxWidth={["100%", "550px"]}
+              maxWidth={["100%", "600px"]}
               spacing="24px"
               zIndex="9"
             >
               <Heading
-                size="3xl"
+                size="4xl"
                 bgClip="text"
                 bgGradient="linear(to-r, white, blue.100)"
               >
-                Understand our rapidly changing world
+                Assess land cover changes in real time
               </Heading>
               <Text fontSize={["lg", "xl"]}>
-                Gain insights into the health of agricultural land, conservation
-                areas, and remote ecosystems with near real-time land cover
-                classification.
+                Gain insights into the health of protected forests and
+                grasslands with intuitive land cover classification and change
+                detection tools.
               </Text>
               <Button
                 colorScheme="whiteAlpha"
@@ -69,15 +61,19 @@ const HomePage: React.FC<Props> = () => {
 
             <Flex
               position={["static", "absolute"]}
-              right={-5}
+              right={-10}
+              bottom={-5}
               zIndex={0}
-              w="60%"
-              minW="600px"
+              height={["auto", "100%"]}
+              width="70%"
+              minHeight="650px"
+              minWidth="650px"
+              overflow="visible"
             >
-              <Image src={Globe} alt="testing globe" />
+              <Globe />
             </Flex>
           </Flex>
-          <Flex align="center" justify="center" h="0px" w="100%">
+          <Flex align="center" justify="center" h="100px" w="100%">
             <Box></Box>
           </Flex>
         </VStack>
