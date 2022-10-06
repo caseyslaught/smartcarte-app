@@ -5,6 +5,8 @@ import { Box } from "@chakra-ui/react";
 const MAPBOX_TOKEN = process.env.REACT_APP_MAPBOX_TOKEN;
 mapboxgl.accessToken = MAPBOX_TOKEN || "";
 
+console.log(MAPBOX_TOKEN);
+
 interface Props {}
 
 const initialView = {
@@ -21,7 +23,6 @@ const Globe: React.FC<Props> = () => {
   function rotateGlobe() {
     // && !userInteracting
     if (map.current) {
-      console.log("here");
       const center = map.current.getCenter();
       center.lng -= 2;
       map.current.easeTo({
