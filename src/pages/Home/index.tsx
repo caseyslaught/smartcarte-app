@@ -1,17 +1,9 @@
 import React from "react";
-import {
-  Box,
-  Button,
-  Flex,
-  Heading,
-  Image,
-  Text,
-  VStack,
-} from "@chakra-ui/react";
-import Globe from "../../assets/images/globe.png";
+import { Box, Button, Flex, Heading, Text, VStack } from "@chakra-ui/react";
 
 import LayoutPublic from "../../layouts/LayoutPublic";
 
+import Globe from "./components/Globe";
 import WaitlistModalForm from "./components/WaitlistModalForm";
 
 interface Props {}
@@ -26,33 +18,36 @@ const HomePage: React.FC<Props> = () => {
         setIsModalOpen={setIsWaitlistOpen}
       />
       <LayoutPublic>
-        <VStack>
+        <VStack spacing={0}>
           <Flex
             align="center"
             direction={["column", "row"]}
             height={["auto", "calc(100vh - 86px)"]}
+            minHeight="680px"
             justify={["center", "space-between"]}
             position="relative"
+            px="1em"
+            maxW="8xl"
             width="100%"
           >
             <VStack
               align={["center", "flex-start"]}
               justify={["center", "space-between"]}
-              maxWidth={["100%", "550px"]}
+              maxWidth={["100%", "600px"]}
               spacing="24px"
               zIndex="9"
             >
               <Heading
-                size="3xl"
+                size="4xl"
                 bgClip="text"
                 bgGradient="linear(to-r, white, blue.100)"
               >
-                Understand our rapidly changing world
+                Assess land cover changes in real time
               </Heading>
               <Text fontSize={["lg", "xl"]}>
-                Gain insights into the health of agricultural land, conservation
-                areas, and remote ecosystems with near real-time land cover
-                classification.
+                Gain insights into the health of protected forests and
+                grasslands with intuitive land cover classification and change
+                detection tools.
               </Text>
               <Button
                 colorScheme="whiteAlpha"
@@ -68,16 +63,25 @@ const HomePage: React.FC<Props> = () => {
             </VStack>
 
             <Flex
+              align="center"
+              justify="center"
               position={["static", "absolute"]}
-              right={-5}
+              right={0}
+              bottom={0}
               zIndex={0}
-              w="60%"
-              minW="600px"
+              height={["auto", "100%"]}
+              overflow="visible"
             >
-              <Image src={Globe} alt="testing globe" />
+              <Globe />
             </Flex>
           </Flex>
-          <Flex align="center" justify="center" h="0px" w="100%">
+          <Flex
+            align="center"
+            justify="center"
+            h="300px"
+            w="100%"
+            background="backgroundLight"
+          >
             <Box></Box>
           </Flex>
         </VStack>

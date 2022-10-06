@@ -9,7 +9,7 @@ const HeaderPublic: React.FC<Props> = () => {
   // TODO: put header heights in theme
 
   return (
-    <VStack justify="center" h={["64px", "86px"]} w="100%">
+    <VStack justify="center" h={["64px", "86px"]} w="100%" px="1em" zIndex={9}>
       <HStack justify="space-between" margin="0 auto" maxWidth="8xl" w="100%">
         <Box w={["160px", "240px"]}>
           <Image src={LogoLight} alt="logo" />

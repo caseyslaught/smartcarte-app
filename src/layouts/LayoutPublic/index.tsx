@@ -10,9 +10,9 @@ interface Props {
 
 const LayoutPublic: React.FC<Props> = ({ children }) => {
   return (
-    <VStack px="1em" w="100%">
+    <VStack w="100%" overflowX="hidden">
       <HeaderPublic />
-      <Box flex={1} maxW="8xl" w="100%">
+      <Box flex={1} w="100%">
         {children}
       </Box>
       <FooterPublic />

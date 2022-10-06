@@ -1,0 +1,41 @@
+[33mcommit 88fc60ab932f1668d5acdcddab6cee347b39643e[m[33m ([m[1;36mHEAD -> [m[1;32mglobe[m[33m)[m
+Author: Casey Slaught <caseyslaught@gmail.com>
+Date:   Thu Oct 6 17:54:58 2022 -0400
+
+    added spinning globe with mapbox-gl and fog
+
+[33mcommit 17bf4350a5bf3f81ceb8877b7525f114d27d4209[m
+Author: Casey Slaught <caseyslaught@gmail.com>
+Date:   Tue Oct 4 18:34:54 2022 -0400
+
+    updated gitignore for env files
+
+[33mcommit 75e98f3d2704517fb8ae390d623e488703a6c8fc[m[33m ([m[1;31morigin/main[m[33m, [m[1;32mmain[m[33m)[m
+Author: Casey Slaught <caseyslaught@gmail.com>
+Date:   Tue Oct 4 18:30:08 2022 -0400
+
+    added select in waitlist form and updated globe formatting
+
+[33mcommit 193141eca746fcc8ac52835e339f24294144bba6[m
+Author: Casey Slaught <caseyslaught@gmail.com>
+Date:   Tue Oct 4 15:02:30 2022 -0400
+
+    started with waitlist modal form
+
+[33mcommit 248f9bd48d9d4a03f8301ffe6d63465319a01ddf[m
+Author: Casey Slaught <caseyslaught@gmail.com>
+Date:   Mon Oct 3 18:06:29 2022 -0400
+
+    added footer and reformatted to allow other sections on Home
+
+[33mcommit 20b0985cba64eaf47e9eac4191f3f2880c100ca8[m
+Author: Casey Slaught <caseyslaught@gmail.com>
+Date:   Mon Oct 3 16:24:24 2022 -0400
+
+    setup basic project structure and main parts of home page
+
+[33mcommit cbca6bc4ca379ad76d227f2b0666c4d2517388df[m
+Author: Casey Slaught <caseyslaught@gmail.com>
+Date:   Tue Sep 13 20:27:33 2022 -0400
+
+    Initialize project using Create React App
