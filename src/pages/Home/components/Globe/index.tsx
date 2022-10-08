@@ -1,23 +1,24 @@
 import React, { MutableRefObject, useEffect, useRef } from "react";
 import mapboxgl, { Map } from "mapbox-gl";
-import { Box } from "@chakra-ui/react";
+import { Box, useMediaQuery } from "@chakra-ui/react";
 
 const MAPBOX_TOKEN = process.env.REACT_APP_MAPBOX_TOKEN;
 mapboxgl.accessToken = MAPBOX_TOKEN || "";
-
-console.log(MAPBOX_TOKEN);
 
 interface Props {}
 
 const initialView = {
   lng: 28,
   lat: 10,
-  zoom: 1.8,
+  zoom: 1.6,
 };
 
 const Globe: React.FC<Props> = () => {
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<Map>(null) as MutableRefObject<Map>;
+  const [isSmallerThan48em] = useMediaQuery("(max-width: 48em");
+  const [isLargerThan80em] = useMediaQuery("(min-width: 80em)");
+  const [isLargerThan96em] = useMediaQuery("(min-width: 96em)");
 
   // this not working super well...
   function rotateGlobe() {
@@ -33,6 +34,21 @@ const Globe: React.FC<Props> = () => {
     }
   }
 
+  // dynamically update zoom
+  useEffect(() => {
+    if (!map.current) return;
+
+    if (isSmallerThan48em) {
+      map.current.easeTo({ zoom: 1.6, duration: 1000 });
+    } else if (isLargerThan96em) {
+      map.current.easeTo({ zoom: 1.9, duration: 1000 });
+    } else if (isLargerThan80em && !isLargerThan96em) {
+      map.current.easeTo({ zoom: 1.7, duration: 1000 });
+    } else {
+      map.current.easeTo({ zoom: 1.6, duration: 1000 });
+    }
+  }, [isSmallerThan48em, isLargerThan80em, isLargerThan96em]);
+
   // initialize Map
   useEffect(() => {
     if (map.current || !mapContainer.current) return;
@@ -45,6 +61,7 @@ const Globe: React.FC<Props> = () => {
       projection: { name: "globe" },
       zoom: initialView.zoom,
     });
+
     map.current.on("load", () => {
       map.current.scrollZoom.disable();
       map.current.setFog({
@@ -85,7 +102,16 @@ const Globe: React.FC<Props> = () => {
     });
   });
 
-  return <Box ref={mapContainer} h="700px" w="700px" overflow="visible"></Box>;
+  const dimensions = ["600px", "600px", "580px", "620px", "680px", "800px"];
+
+  return (
+    <Box
+      ref={mapContainer}
+      h={dimensions}
+      w={dimensions}
+      overflow="visible"
+    ></Box>
+  );
 };
 
 export default Globe;
