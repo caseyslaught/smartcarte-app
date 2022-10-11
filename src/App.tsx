@@ -10,6 +10,7 @@ import HomePage from "./pages/Home";
 import LoginPage from "./pages/Login";
 import MapPage from "./pages/Map";
 import NotFoundPage from "./pages/NotFound";
+import RegisterPage from "./pages/Register";
 
 const App: React.FC = () => {
   return (
@@ -18,6 +19,7 @@ const App: React.FC = () => {
         <Route element={<LayoutPublic />}>
           <Route index element={<HomePage />} />
           <Route path="login" element={<LoginPage />} />
+          <Route path="register" element={<RegisterPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Route>
 

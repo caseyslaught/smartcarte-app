@@ -23,9 +23,17 @@ const AccountForm: React.FC<Props> = ({
   handleSubmit,
   children,
 }) => {
-  let link = <Link to="login">Login</Link>;
+  let link = (
+    <Link to="/login" replace={true}>
+      Login
+    </Link>
+  );
   if (type === AccountFormTypes.Login) {
-    link = <Link to="/register">Register</Link>;
+    link = (
+      <Link to="/register" replace={true}>
+        Register
+      </Link>
+    );
   }
 
   return (

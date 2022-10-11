@@ -1,13 +1,19 @@
 import React from "react";
-import { Box, Button, Flex, Image } from "@chakra-ui/react";
+import { Box, Button, Flex, Select } from "@chakra-ui/react";
 
-import LogoLight from "../../assets/images/logo_light.png";
 import useAuth from "../../hooks/useAuth";
 
 interface Props {}
 
 const HeaderPrivate: React.FC<Props> = () => {
   const { onLogout } = useAuth();
+
+  const regions = [
+    "Central Sector",
+    "Lake Sector",
+    "Northern Sector",
+    "Southern Sector",
+  ];
 
   return (
     <Flex
@@ -18,8 +24,14 @@ const HeaderPrivate: React.FC<Props> = () => {
       px={["0.8em", "1em"]}
       zIndex={9}
     >
-      <Box w="160px">
-        <Image src={LogoLight} alt="logo" />
+      <Box>
+        <Select size={["sm", "md"]} variant="outline">
+          {regions.map((region) => (
+            <option value={region} key={region} style={{ color: "#333" }}>
+              {region}
+            </option>
+          ))}
+        </Select>
       </Box>
       <Button
         colorScheme="whiteAlpha"

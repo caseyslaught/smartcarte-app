@@ -10,7 +10,7 @@ interface Props {}
 
 const LayoutPublic: React.FC<Props> = () => {
   const navigate = useNavigate();
-  const { token, checkToken, loginLoading } = useAuth();
+  const { token, checkToken, loginLoading, registerLoading } = useAuth();
 
   useEffect(() => {
     if (checkToken(token)) {
@@ -21,8 +21,8 @@ const LayoutPublic: React.FC<Props> = () => {
   if (token) return <></>;
 
   return (
-    <VStack w="100%" overflowX="hidden">
-      <Modal isOpen={loginLoading} onClose={() => {}}>
+    <VStack w="100%" overflowX="hidden" spacing={0}>
+      <Modal isOpen={loginLoading || registerLoading} onClose={() => {}}>
         <ModalOverlay />
       </Modal>
 

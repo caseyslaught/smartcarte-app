@@ -18,13 +18,12 @@ const LayoutPrivate: React.FC<Props> = () => {
   if (!token) return <></>;
 
   return (
-    <VStack w="100%" overflowX="hidden">
+    <VStack w="100%" overflowX="hidden" spacing={0}>
       <Modal isOpen={logoutLoading} onClose={() => {}}>
         <ModalOverlay />
       </Modal>
-
       <HeaderPrivate />
-      <Box flex={1} w="100%">
+      <Box flex={1} w="100%" mt="0em">
         <Outlet />
       </Box>
     </VStack>

@@ -11,8 +11,7 @@ interface Props {}
 
 const LoginPage: React.FC<Props> = () => {
   const [disabled, setDisabled] = useState(true);
-  const [loading, setLoading] = useState(false);
-  const { loginError, setLoginError, onLogin } = useAuth();
+  const { loginError, setLoginError, onLogin, loginLoading } = useAuth();
 
   const form = useFormik({
     initialValues: {
@@ -24,15 +23,13 @@ const LoginPage: React.FC<Props> = () => {
     },
     onSubmit: async (values) => {
       setLoginError("");
-      setLoading(true);
       await onLogin(values.email, values.password);
-      setLoading(false);
     },
   });
 
   return (
     <Flex
-      align="center"
+      align={["flex-start", "center"]}
       justify="center"
       minHeight={[
         "calc(100vh - 64px)",
@@ -42,12 +39,13 @@ const LoginPage: React.FC<Props> = () => {
         "calc(100vh - 86px)",
       ]}
       px={["0.5em", "1em"]}
+      py={["0.5em", "1em"]}
     >
       <AccountForm
         title="Login"
         error={loginError}
         disabled={disabled}
-        loading={loading}
+        loading={loginLoading}
         handleSubmit={() => form.handleSubmit()}
         type={AccountFormTypes.Login}
       >
@@ -56,7 +54,6 @@ const LoginPage: React.FC<Props> = () => {
           name="email"
           type="email"
           placeholder="Email"
-          isDisabled={false}
           value={form.values.email}
           onChange={form.handleChange}
         />
@@ -65,7 +62,6 @@ const LoginPage: React.FC<Props> = () => {
           name="password"
           placeholder="Password"
           type="password"
-          isDisabled={false}
           value={form.values.password}
           onChange={form.handleChange}
         />
