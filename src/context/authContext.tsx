@@ -84,8 +84,6 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
         email,
         password,
       });
-      setLoginLoading(false);
-
       if (res.status === 200) {
         setToken({
           email,
@@ -95,12 +93,11 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
           expiresIn: ACCESS_TOKEN_EXPIRES_MILLIS,
         });
         navigate("/dashboard", { replace: true });
-      } else if (res.status === 403) {
-        setLoginError("Invalid email and password combination.");
       }
     } catch (error) {
-      console.log(error);
-      setLoginError("Something unexpected went wrong.");
+      setLoginError("Invalid email and password combination.");
+    } finally {
+      setLoginLoading(false);
     }
   };
 
