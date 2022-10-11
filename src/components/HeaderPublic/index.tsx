@@ -1,15 +1,33 @@
 import React from "react";
-import { Box, Button, HStack, Image, VStack } from "@chakra-ui/react";
+import { Box, Button, Flex, HStack, Image } from "@chakra-ui/react";
+import { Link, useLocation } from "react-router-dom";
 
 import LogoLight from "../../assets/images/logo_light.png";
 
 interface Props {}
 
 const HeaderPublic: React.FC<Props> = () => {
-  // TODO: put header heights in theme
+  const { pathname } = useLocation();
+
+  let accountBtn = (
+    <Link to="/login">
+      <Button colorScheme="whiteAlpha" size="md" variant="outline">
+        Log in
+      </Button>
+    </Link>
+  );
+  if (pathname === "/login") {
+    accountBtn = (
+      <Link to="/register">
+        <Button colorScheme="whiteAlpha" size="md" variant="outline">
+          Register
+        </Button>
+      </Link>
+    );
+  }
 
   return (
-    <VStack
+    <Flex
       justify="center"
       h={["64px", "64px", "64px", "70px", "86px"]}
       w="100%"
@@ -22,16 +40,14 @@ const HeaderPublic: React.FC<Props> = () => {
         maxW={["7xl", "7xl", "7xl", "7xl", "7xl", "8xl"]}
         w="100%"
       >
-        <Box w={["160px", "180px", "180px", "200px", "240px"]}>
-          <Image src={LogoLight} alt="logo" />
-        </Box>
-        <Box>
-          <Button colorScheme="whiteAlpha" size="sm" variant="outline">
-            Try demo
-          </Button>
-        </Box>
+        <Link to="/">
+          <Box w={["160px", "180px", "180px", "200px", "240px"]}>
+            <Image src={LogoLight} alt="logo" />
+          </Box>
+        </Link>
+        <Box>{accountBtn}</Box>
       </HStack>
-    </VStack>
+    </Flex>
   );
 };
 
