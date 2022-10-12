@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Box, Button, Flex, Select } from "@chakra-ui/react";
 
 import useAuth from "../../hooks/useAuth";
@@ -8,7 +8,11 @@ interface Props {}
 
 const HeaderApp: React.FC<Props> = () => {
   const { onLogout } = useAuth();
-  const { currentApp, setCurrentApp } = useApp();
+  const { currentApp } = useApp();
+
+  useEffect(() => {
+    console.log(currentApp);
+  }, [currentApp]);
 
   const regions = [
     "Central Sector",
