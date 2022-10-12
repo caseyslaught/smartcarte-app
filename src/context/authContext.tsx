@@ -4,24 +4,10 @@ import { useNavigate } from "react-router";
 import { ProtectedAPI, PublicAPI } from "../api";
 import useLocalToken from "../hooks/useLocalToken";
 import { ACCESS_TOKEN_EXPIRES_MILLIS } from "../constants";
-import { AuthType, TokenType } from "../types/authTypes";
+import { AuthType } from "../types/authTypes";
 import { RegistrationType } from "../types/formTypes";
 
-// TODO: is there a better way to initialize this?
-export const AuthContext = createContext<AuthType>({
-  token: null,
-  checkToken: (token) => true,
-  loginError: null,
-  setLoginError: () => {},
-  registerError: null,
-  setRegisterError: () => {},
-  onLogin: () => {},
-  onLogout: () => {},
-  onRegister: () => {},
-  loginLoading: false,
-  logoutLoading: false,
-  registerLoading: false,
-});
+export const AuthContext = createContext<AuthType>({} as AuthType);
 
 interface Props {
   children: React.ReactNode;
@@ -37,7 +23,7 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
 
   const navigate = useNavigate();
 
-  const checkToken = (token: TokenType | null): boolean => {
+  const checkToken = async (): Promise<boolean> => {
     if (!token) return false;
 
     const { lastRefresh, expiresIn } = token;
@@ -46,12 +32,28 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
       return false;
     }
 
-    /*
     if (lastRefresh + expiresIn <= new Date().getTime()) {
-      setToken(null);
-      return false;
+      try {
+        const res = await PublicAPI.post("account/refresh/", {
+          refresh_token: token.refreshToken,
+        });
+
+        if (res.status === 200) {
+          setToken({
+            email: token.email,
+            accessToken: res.data.access_token,
+            refreshToken: token.refreshToken,
+            lastRefresh: new Date().getTime(),
+            expiresIn: ACCESS_TOKEN_EXPIRES_MILLIS,
+          });
+          return true;
+        }
+      } catch (error) {
+        console.log(error);
+        setToken(null);
+        return false;
+      }
     }
-    */
 
     return true;
   };
@@ -71,7 +73,7 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
           lastRefresh: new Date().getTime(),
           expiresIn: ACCESS_TOKEN_EXPIRES_MILLIS,
         });
-        navigate("/dashboard", { replace: true });
+        navigate("/app", { replace: true });
       }
     } catch (error) {
       setLoginError("Invalid email and password combination.");
@@ -98,7 +100,7 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
           lastRefresh: new Date().getTime(),
           expiresIn: ACCESS_TOKEN_EXPIRES_MILLIS,
         });
-        navigate("/dashboard", { replace: true });
+        navigate("/app", { replace: true });
       }
     } catch (error: unknown) {
       setRegisterError("This email might already be in use.");
@@ -107,7 +109,16 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
     }
   };
 
-  const handleLogout = async () => {
+  const handleLogout = () => {
+    setLogoutLoading(true);
+    setTimeout(() => {
+      setToken(null);
+      navigate("/login");
+      setLogoutLoading(false);
+    }, 1200);
+  };
+
+  const handleGlobalLogout = async () => {
     try {
       setLogoutLoading(true);
       await ProtectedAPI.post("account/logout/");
@@ -132,6 +143,7 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
     setRegisterError,
     onLogin: handleLogin,
     onLogout: handleLogout,
+    onGlobalLogout: handleGlobalLogout,
     onRegister: handleRegistration,
   };
 

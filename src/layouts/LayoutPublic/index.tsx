@@ -13,10 +13,12 @@ const LayoutPublic: React.FC<Props> = () => {
   const { token, checkToken, loginLoading, registerLoading } = useAuth();
 
   useEffect(() => {
-    if (checkToken(token)) {
-      navigate("/dashboard", { replace: true });
-    }
-  }, [token, checkToken, navigate]);
+    const run = async () => {
+      const valid = await checkToken();
+      if (valid) navigate("/app", { replace: true });
+    };
+    run();
+  }, [checkToken, navigate]);
 
   if (token) return <></>;
 

@@ -2,11 +2,13 @@ import React from "react";
 import { Box, Button, Flex, Select } from "@chakra-ui/react";
 
 import useAuth from "../../hooks/useAuth";
+import useApp from "../../hooks/useApp";
 
 interface Props {}
 
-const HeaderPrivate: React.FC<Props> = () => {
+const HeaderApp: React.FC<Props> = () => {
   const { onLogout } = useAuth();
+  const { currentApp, setCurrentApp } = useApp();
 
   const regions = [
     "Central Sector",
@@ -45,4 +47,4 @@ const HeaderPrivate: React.FC<Props> = () => {
   );
 };
 
-export default HeaderPrivate;
+export default HeaderApp;

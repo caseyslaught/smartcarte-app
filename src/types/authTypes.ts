@@ -15,10 +15,11 @@ export interface AuthType {
   registerLoading: boolean;
   loginError: string | null;
   registerError: string | null;
-  checkToken: (token: TokenType | null) => boolean;
+  checkToken: () => Promise<boolean>;
   setLoginError: (error: string | null) => void;
   setRegisterError: (error: string | null) => void;
   onLogin: (email: string, password: string) => void;
   onLogout: () => void;
+  onGlobalLogout: () => void;
   onRegister: (account: RegistrationType) => void;
 }

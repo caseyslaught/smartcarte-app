@@ -2,18 +2,22 @@ import React, { useEffect } from "react";
 import { Box, Modal, ModalOverlay, VStack } from "@chakra-ui/react";
 import { useNavigate, Outlet } from "react-router-dom";
 
-import HeaderPrivate from "../../components/HeaderPrivate";
+import HeaderApp from "../../components/HeaderApp";
 import useAuth from "../../hooks/useAuth";
 
 interface Props {}
 
-const LayoutPrivate: React.FC<Props> = () => {
+const LayoutApp: React.FC<Props> = () => {
   const navigate = useNavigate();
   const { token, checkToken, logoutLoading } = useAuth();
 
   useEffect(() => {
-    if (!checkToken(token)) navigate("/login", { replace: true });
-  }, [token, checkToken, navigate]);
+    const run = async () => {
+      const valid = await checkToken();
+      if (!valid) navigate("/login", { replace: true });
+    };
+    run();
+  }, [checkToken, navigate]);
 
   if (!token) return <></>;
 
@@ -22,7 +26,7 @@ const LayoutPrivate: React.FC<Props> = () => {
       <Modal isOpen={logoutLoading} onClose={() => {}}>
         <ModalOverlay />
       </Modal>
-      <HeaderPrivate />
+      <HeaderApp />
       <Box flex={1} w="100%" mt="0em">
         <Outlet />
       </Box>
@@ -30,4 +34,4 @@ const LayoutPrivate: React.FC<Props> = () => {
   );
 };
 
-export default LayoutPrivate;
+export default LayoutApp;
