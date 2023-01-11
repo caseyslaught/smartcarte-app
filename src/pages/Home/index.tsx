@@ -75,10 +75,10 @@ const HomePage: React.FC<Props> = () => {
           <Globe />
         </Flex>
       </Flex>
+
       <Flex
         align="center"
         justify="center"
-        h="300px"
         w="100%"
         background="backgroundLight"
       >

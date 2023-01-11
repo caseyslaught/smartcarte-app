@@ -1,12 +1,9 @@
 import React from "react";
 
-type SetType = (value: number) => void;
+type SetType = (value: any) => void;
 
-const useLocalStorage = (
-  key: string,
-  initialValue: number
-): [number, SetType] => {
-  const [storedValue, setStoredValue] = React.useState<number>(() => {
+const useLocalStorage = (key: string, initialValue: any): [any, SetType] => {
+  const [storedValue, setStoredValue] = React.useState<any>(() => {
     try {
       const item = window.localStorage.getItem(key);
       return item ? JSON.parse(item) : initialValue;
@@ -16,7 +13,7 @@ const useLocalStorage = (
     }
   });
 
-  const setValue = (value: number) => {
+  const setValue = (value: any) => {
     try {
       setStoredValue(value);
       window.localStorage.setItem(key, JSON.stringify(value));
