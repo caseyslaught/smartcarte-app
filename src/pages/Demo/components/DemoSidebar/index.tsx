@@ -1,10 +1,13 @@
 import React, { useState } from "react";
 import { Box, HStack, IconButton, VStack, Button } from "@chakra-ui/react";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
+import area from "@turf/area";
 
 import useDemo from "../../hooks/useDemo";
 import DemoEmailBox from "../DemoEmailBox";
 import DemoParametersBox from "../DemoParametersBox";
+
+import { isEmailValid } from "../../../../utilities/text";
 
 interface Props {}
 
@@ -12,7 +15,14 @@ const DemoSidebar: React.FC<Props> = () => {
   const [isExpanded, setIsExpanded] = useState(true);
   const { year, month, regionGeojson, email } = useDemo();
 
-  const startEnabled = year && month && regionGeojson && email;
+  let regionTooBig = true;
+  if (regionGeojson) {
+    const regionSize = Math.round(area(regionGeojson) / 1000000);
+    regionTooBig = regionSize > 5000;
+  }
+
+  const startEnabled =
+    year && month && !regionTooBig && email && isEmailValid(email);
 
   return (
     <HStack

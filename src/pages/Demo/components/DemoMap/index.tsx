@@ -1,3 +1,4 @@
+/* eslint import/no-webpack-loader-syntax: off */
 import React, { useRef, MutableRefObject, useEffect } from "react";
 import mapboxgl, { Map } from "mapbox-gl";
 import MapboxDraw from "@mapbox/mapbox-gl-draw";
@@ -10,6 +11,10 @@ import drawStyles from "./drawStyles";
 
 const DrawRectangleMode = require("mapbox-gl-draw-rectangle-mode");
 const StaticMode = require("@mapbox/mapbox-gl-draw-static-mode");
+
+// @ts-ignore
+mapboxgl.workerClass =
+  require("worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker").default;
 
 const MAPBOX_TOKEN = process.env.REACT_APP_MAPBOX_TOKEN;
 mapboxgl.accessToken = MAPBOX_TOKEN || "";
@@ -35,6 +40,7 @@ const DemoMap: React.FC<Props> = () => {
       center: [lng, lat],
       projection: { name: "globe" },
       zoom: zoom,
+      minZoom: 2.4,
     });
 
     map.current.on("load", () => {});

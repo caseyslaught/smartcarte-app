@@ -32,7 +32,7 @@ const DemoParametersBox: React.FC<Props> = () => {
 
   const pastMonths = usePastMonths(year);
 
-  let regionSizeString = null;
+  let regionSizeString = "0 km² / 5000 km²";
   let regionTooBig = false;
   if (regionGeojson) {
     const regionSize = Math.round(area(regionGeojson) / 1000000);
@@ -124,7 +124,7 @@ const DemoParametersBox: React.FC<Props> = () => {
         <FormHelperText
           fontWeight={regionTooBig ? "bold" : "normal"}
           fontSize="0.8em"
-          ps="2px"
+          pe="2px"
           textAlign="right"
           color={regionTooBig ? "red.700" : "inherit"}
         >
