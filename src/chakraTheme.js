@@ -9,13 +9,18 @@ const theme = {
   },
   colors: {
     accent: "#C18000",
-    background: "#222",
-    backgroundLight: "#444",
+    background: "#222222",
+    backgroundLight: "#444444",
+    offWhite: "#F3F3F3",
+    demoDark: "#4A4A4A",
   },
   fontSizes: {},
   layout: {},
   styles: {
     global: (props) => ({
+      html: {
+        height: "100%",
+      },
       "html, body": {
         margin: 0,
         padding: 0,
@@ -23,11 +28,12 @@ const theme = {
       body: {
         background: props.theme.colors.background,
         color: "white",
+        height: "100%",
         minHeight: "100vh",
         minWidth: "320px",
         width: "100%",
-        "-ms-overflow-style": "none",
-        "scrollbar-width": "none",
+        MsOverflowStyle: "none",
+        scrollbarWidth: "none",
       },
       "body::-webkit-scrollbar": {
         display: "none",

@@ -1,14 +1,23 @@
 import React from "react";
 import { Box, Button, Flex, HStack, Image } from "@chakra-ui/react";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom"; // useLocation
 
 import LogoLight from "../../assets/images/logo_light.png";
 
 interface Props {}
 
 const HeaderPublic: React.FC<Props> = () => {
-  const { pathname } = useLocation();
+  //const { pathname } = useLocation();
 
+  const accountBtn = (
+    <Link to="/demo">
+      <Button colorScheme="whiteAlpha" size="md" variant="outline">
+        Try demo
+      </Button>
+    </Link>
+  );
+
+  /*
   let accountBtn = (
     <Link to="/login">
       <Button colorScheme="whiteAlpha" size="md" variant="outline">
@@ -25,6 +34,7 @@ const HeaderPublic: React.FC<Props> = () => {
       </Link>
     );
   }
+  */
 
   return (
     <Flex

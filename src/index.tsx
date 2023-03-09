@@ -7,7 +7,7 @@ import App from "./App";
 import theme from "./chakraTheme";
 
 import "mapbox-gl/dist/mapbox-gl.css";
-import "./index.css";
+import "@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement

@@ -10,10 +10,6 @@ const HeaderApp: React.FC<Props> = () => {
   const { onLogout } = useAuth();
   const { currentApp } = useApp();
 
-  useEffect(() => {
-    console.log(currentApp);
-  }, [currentApp]);
-
   const regions = [
     "Central Sector",
     "Lake Sector",

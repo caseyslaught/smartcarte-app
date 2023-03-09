@@ -56,7 +56,6 @@ const WaitlistModalForm: React.FC<Props> = ({
       setDisabled(_disabled);
     },
     onSubmit: async (values, actions) => {
-      console.log(values);
       setLoading(true);
       try {
         const res = await PublicAPI.post("account/waitlist_signup/", {
