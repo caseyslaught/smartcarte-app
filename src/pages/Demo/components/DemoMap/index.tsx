@@ -3,7 +3,6 @@ import mapboxgl, { Map } from "mapbox-gl";
 import MapboxDraw from "@mapbox/mapbox-gl-draw";
 import { Box } from "@chakra-ui/react";
 import { polygon } from "@turf/helpers";
-import area from "@turf/area";
 
 import useLocalStorage from "../../../../hooks/useLocalStorage";
 import useDemo from "../../hooks/useDemo";
@@ -24,7 +23,7 @@ const DemoMap: React.FC<Props> = () => {
   const [lat, setLat] = useLocalStorage("lat", -0.72);
   const [lng, setLng] = useLocalStorage("lng", 29.38);
   const [zoom, setZoom] = useLocalStorage("zoom", 12);
-  const { drawEnabled, setDrawEnabled, setRegionGeojson, setRegionAreaHa } =
+  const { drawEnabled, setDrawEnabled, setRegionGeojson, clearRegionTime } =
     useDemo();
 
   useEffect(() => {
@@ -63,9 +62,7 @@ const DemoMap: React.FC<Props> = () => {
 
     map.current.on("draw.create", function (feature) {
       const polygonObj = polygon(feature.features[0].geometry.coordinates);
-      const areaHa = area(polygonObj) / 10000;
       setRegionGeojson(polygonObj);
-      setRegionAreaHa(areaHa);
       setDrawEnabled(false);
     });
   });
@@ -74,6 +71,12 @@ const DemoMap: React.FC<Props> = () => {
     const newMode: string = drawEnabled ? "draw_rectangle" : "static";
     draw.current.changeMode(newMode);
   }, [drawEnabled]);
+
+  useEffect(() => {
+    if (clearRegionTime) {
+      draw.current.deleteAll();
+    }
+  }, [clearRegionTime]);
 
   return <Box ref={mapContainer} h="100%" w="100%"></Box>;
 };

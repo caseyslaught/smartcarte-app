@@ -6,8 +6,10 @@ import {
   Select,
   VStack,
   Button,
+  FormHelperText,
 } from "@chakra-ui/react";
 import { FiPlusSquare, FiXSquare } from "react-icons/fi";
+import area from "@turf/area";
 
 import useDemo from "../../hooks/useDemo";
 import usePastMonths from "../../hooks/usePastMonths";
@@ -25,10 +27,18 @@ const DemoParametersBox: React.FC<Props> = () => {
     setDrawEnabled,
     regionGeojson,
     setRegionGeojson,
-    setRegionAreaHa,
+    setClearRegionTime,
   } = useDemo();
 
   const pastMonths = usePastMonths(year);
+
+  let regionSizeString = null;
+  let regionTooBig = false;
+  if (regionGeojson) {
+    const regionSize = Math.round(area(regionGeojson) / 1000000);
+    regionTooBig = regionSize > 5000;
+    regionSizeString = `${regionSize} km² / 5000 km²`;
+  }
 
   useEffect(() => {
     if (!pastMonths.includes(month)) {
@@ -85,12 +95,12 @@ const DemoParametersBox: React.FC<Props> = () => {
         </FormControl>
       </HStack>
       <FormControl id="region">
-        <FormLabel>Region</FormLabel>
+        <FormLabel>Region of interest</FormLabel>
         <HStack w="100%">
           <Button
             flex={1}
             disabled={regionGeojson !== null}
-            colorScheme={drawEnabled ? "green" : "gray"}
+            colorScheme={drawEnabled ? "blue" : "gray"}
             variant={drawEnabled ? "solid" : "outline"}
             rightIcon={<FiPlusSquare />}
             onClick={() => setDrawEnabled(!drawEnabled)}
@@ -105,12 +115,21 @@ const DemoParametersBox: React.FC<Props> = () => {
             rightIcon={<FiXSquare />}
             onClick={() => {
               setRegionGeojson(null);
-              setRegionAreaHa(null);
+              setClearRegionTime(new Date().getTime());
             }}
           >
             Clear
           </Button>
         </HStack>
+        <FormHelperText
+          fontWeight={regionTooBig ? "bold" : "normal"}
+          fontSize="0.8em"
+          ps="2px"
+          textAlign="right"
+          color={regionTooBig ? "red.700" : "inherit"}
+        >
+          {regionSizeString}
+        </FormHelperText>
       </FormControl>
     </VStack>
   );

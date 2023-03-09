@@ -1,4 +1,5 @@
 import React, { createContext, useEffect, useState } from "react";
+import { Feature, Polygon, Properties } from "@turf/helpers";
 import { v4 as uuidv4 } from "uuid";
 
 import useLocalStorage from "../../../hooks/useLocalStorage";
@@ -18,11 +19,14 @@ export interface DemoType {
   email: string;
   setEmail: (email: string) => void;
 
-  regionGeojson: object | null;
-  setRegionGeojson: (regionGeojson: object | null) => void;
+  regionGeojson: Feature<Polygon, Properties> | null;
+  setRegionGeojson: (
+    regionGeojson: Feature<Polygon, Properties> | null
+  ) => void;
 
-  regionAreaHa: number | null;
-  setRegionAreaHa: (regionAreaHa: number | null) => void;
+  // flag for clearing the Mapbox drawings
+  clearRegionTime: number | null;
+  setClearRegionTime: (clearRegionTime: number | null) => void;
 
   taskType: DemoTaskTypes;
   setTaskType: (taskType: DemoTaskTypes) => void;
@@ -46,8 +50,11 @@ export const DemoProvider: React.FC<Props> = ({ children }) => {
   const [year, setYear] = useState<number>(2023);
   const [month, setMonth] = useState<number>(2);
   const [email, setEmail] = useState<string>("");
-  const [regionGeojson, setRegionGeojson] = useState<object | null>(null);
-  const [regionAreaHa, setRegionAreaHa] = useState<number | null>(null);
+  const [regionGeojson, setRegionGeojson] = useState<Feature<
+    Polygon,
+    Properties
+  > | null>(null);
+  const [clearRegionTime, setClearRegionTime] = useState<number | null>(null);
   const [taskType, setTaskType] = useState<DemoTaskTypes>(
     DemoTaskTypes.LandcoverClassification
   );
@@ -69,8 +76,8 @@ export const DemoProvider: React.FC<Props> = ({ children }) => {
     setEmail,
     regionGeojson,
     setRegionGeojson,
-    regionAreaHa,
-    setRegionAreaHa,
+    clearRegionTime,
+    setClearRegionTime,
     taskType,
     setTaskType,
     tid,

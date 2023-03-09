@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Box, HStack, IconButton, VStack, Button } from "@chakra-ui/react";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 
+import useDemo from "../../hooks/useDemo";
 import DemoEmailBox from "../DemoEmailBox";
 import DemoParametersBox from "../DemoParametersBox";
 
@@ -9,6 +10,9 @@ interface Props {}
 
 const DemoSidebar: React.FC<Props> = () => {
   const [isExpanded, setIsExpanded] = useState(true);
+  const { year, month, regionGeojson, email } = useDemo();
+
+  const startEnabled = year && month && regionGeojson && email;
 
   return (
     <HStack
@@ -36,8 +40,9 @@ const DemoSidebar: React.FC<Props> = () => {
         <DemoParametersBox />
         <DemoEmailBox />
 
-        <Box w="100%" borderRadius="md" display="none">
+        <Box w="100%" borderRadius="md">
           <Button
+            disabled={!startEnabled}
             colorScheme="blue"
             variant="solid"
             w="100%"
