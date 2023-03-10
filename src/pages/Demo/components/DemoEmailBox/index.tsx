@@ -17,7 +17,7 @@ const DemoEmailBox: React.FC<Props> = () => {
 
   return (
     <VStack align="flex-start" p="1em" w="100%" bg="offWhite" borderRadius="md">
-      <FormControl id="email">
+      <FormControl id="email" isRequired={true}>
         <FormLabel>Email</FormLabel>
         <Input
           type="email"

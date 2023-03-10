@@ -2964,6 +2964,14 @@
   resolved "https://registry.yarnpkg.com/@trysound/sax/-/sax-0.2.0.tgz#cccaab758af56761eb7bf37af6f03f326dd798ad"
   integrity sha512-L7z9BgrNEcYyUYtF+HaEfiS5ebkh9jXqbszz7pC0hRBPaatV0XjSD3+eHrpqFemQfgwiFF0QPIarnIihIDn7OA==
 
+"@turf/area@6.0.1":
+  version "6.0.1"
+  resolved "https://registry.yarnpkg.com/@turf/area/-/area-6.0.1.tgz#50ed63c70ef2bdb72952384f1594319d94f3b051"
+  integrity sha512-Zv+3N1ep9P5JvR0YOYagLANyapGWQBh8atdeR3bKpWcigVXFsEKNUw03U/5xnh+cKzm7yozHD6MFJkqQv55y0g==
+  dependencies:
+    "@turf/helpers" "6.x"
+    "@turf/meta" "6.x"
+
 "@turf/area@^6.5.0":
   version "6.5.0"
   resolved "https://registry.yarnpkg.com/@turf/area/-/area-6.5.0.tgz#1d0d7aee01d8a4a3d4c91663ed35cc615f36ad56"
@@ -2972,12 +2980,12 @@
     "@turf/helpers" "^6.5.0"
     "@turf/meta" "^6.5.0"
 
-"@turf/helpers@^6.5.0":
+"@turf/helpers@6.x", "@turf/helpers@^6.5.0":
   version "6.5.0"
   resolved "https://registry.yarnpkg.com/@turf/helpers/-/helpers-6.5.0.tgz#f79af094bd6b8ce7ed2bd3e089a8493ee6cae82e"
   integrity sha512-VbI1dV5bLFzohYYdgqwikdMVpe7pJ9X3E+dlr425wa2/sMJqYDhTO++ec38/pcPvPE6oD9WEEeU3Xu3gza+VPw==
 
-"@turf/meta@^6.5.0":
+"@turf/meta@6.x", "@turf/meta@^6.5.0":
   version "6.5.0"
   resolved "https://registry.yarnpkg.com/@turf/meta/-/meta-6.5.0.tgz#b725c3653c9f432133eaa04d3421f7e51e0418ca"
   integrity sha512-RrArvtsV0vdsCBegoBtOalgdSOfkBrTJ07VkpiCnq/491W67hnMWmDu7e6Ztw0C3WldRYTXkg3SumfdzZxLBHA==
@@ -7686,6 +7694,13 @@ mapbox-gl-draw-rectangle-mode@^1.0.4:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/mapbox-gl-draw-rectangle-mode/-/mapbox-gl-draw-rectangle-mode-1.0.4.tgz#42987d68872a5fb5cc5d76d3375ee20cd8bab8f7"
   integrity sha512-BdF6nwEK2p8n9LQoMPzBO8LhddW1fe+d5vK8HQIei+4VcRnUbKNsEj7Z15FsJxCHzsc2BQKXbESx5GaE8x0imQ==
+
+mapbox-gl-draw-rectangle-restrict-area@^3.1.5:
+  version "3.1.5"
+  resolved "https://registry.yarnpkg.com/mapbox-gl-draw-rectangle-restrict-area/-/mapbox-gl-draw-rectangle-restrict-area-3.1.5.tgz#08944fc663f129ea69bb735a92aff8b6907873b8"
+  integrity sha512-Z8YjhgdIuLghnL6lPR/juTmU6AdIowH7zZLDh+qurL+hJ7+4tcdcPMP72Ys2NxtMmm4FP2xoRtHDYlcEPP94/w==
+  dependencies:
+    "@turf/area" "6.0.1"
 
 mapbox-gl@^2.10.0:
   version "2.10.0"

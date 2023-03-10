@@ -24,6 +24,9 @@ export interface DemoType {
     regionGeojson: Feature<Polygon, Properties> | null
   ) => void;
 
+  regionArea: number | null;
+  setRegionArea: (regionArea: number | null) => void;
+
   // flag for clearing the Mapbox drawings
   clearRegionTime: number | null;
   setClearRegionTime: (clearRegionTime: number | null) => void;
@@ -54,6 +57,7 @@ export const DemoProvider: React.FC<Props> = ({ children }) => {
     Polygon,
     Properties
   > | null>(null);
+  const [regionArea, setRegionArea] = useState<number | null>(null);
   const [clearRegionTime, setClearRegionTime] = useState<number | null>(null);
   const [taskType, setTaskType] = useState<DemoTaskTypes>(
     DemoTaskTypes.LandcoverClassification
@@ -76,6 +80,8 @@ export const DemoProvider: React.FC<Props> = ({ children }) => {
     setEmail,
     regionGeojson,
     setRegionGeojson,
+    regionArea,
+    setRegionArea,
     clearRegionTime,
     setClearRegionTime,
     taskType,

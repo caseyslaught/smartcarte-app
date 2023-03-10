@@ -20,7 +20,7 @@ const LayoutDemo: React.FC<Props> = () => {
       direction="column"
       h="100%"
       w="100%"
-      overflowX="hidden"
+      overflow="hidden"
     >
       <Modal isOpen={isModalOpen} onClose={() => {}}>
         <ModalOverlay />

@@ -9,15 +9,16 @@ import {
   FormHelperText,
 } from "@chakra-ui/react";
 import { FiPlusSquare, FiXSquare } from "react-icons/fi";
-import area from "@turf/area";
 
 import useDemo from "../../hooks/useDemo";
 import usePastMonths from "../../hooks/usePastMonths";
 import { getLongMonthName } from "../../../../utilities/dates";
 
-interface Props {}
+interface Props {
+  handleDraw: () => void;
+}
 
-const DemoParametersBox: React.FC<Props> = () => {
+const DemoParametersBox: React.FC<Props> = ({ handleDraw }) => {
   const {
     year,
     setYear,
@@ -26,18 +27,20 @@ const DemoParametersBox: React.FC<Props> = () => {
     drawEnabled,
     setDrawEnabled,
     regionGeojson,
+    regionArea,
+    setRegionArea,
     setRegionGeojson,
     setClearRegionTime,
   } = useDemo();
 
   const pastMonths = usePastMonths(year);
 
-  let regionSizeString = "0 km² / 5000 km²";
+  let regionSizeString = "0 km² / 5,000 km²";
   let regionTooBig = false;
-  if (regionGeojson) {
-    const regionSize = Math.round(area(regionGeojson) / 1000000);
-    regionTooBig = regionSize > 5000;
-    regionSizeString = `${regionSize} km² / 5000 km²`;
+  if (regionArea) {
+    let formattedArea = regionArea.toLocaleString();
+    regionTooBig = regionArea > 5000;
+    regionSizeString = `${formattedArea} km² / 5,000 km²`;
   }
 
   useEffect(() => {
@@ -48,7 +51,7 @@ const DemoParametersBox: React.FC<Props> = () => {
 
   return (
     <VStack p="1em" w="100%" bg="offWhite" borderRadius="md">
-      <FormControl id="taskType">
+      <FormControl id="taskType" isRequired={true}>
         <FormLabel>Task type</FormLabel>
         <Select
           disabled={true}
@@ -63,7 +66,7 @@ const DemoParametersBox: React.FC<Props> = () => {
         </Select>
       </FormControl>
       <HStack w="100%">
-        <FormControl id="year">
+        <FormControl id="year" isRequired={true}>
           <FormLabel>Year</FormLabel>
           <Select
             size="md"
@@ -78,7 +81,7 @@ const DemoParametersBox: React.FC<Props> = () => {
             <option value={2019}>2019</option>
           </Select>
         </FormControl>
-        <FormControl id="month">
+        <FormControl id="month" isRequired={true}>
           <FormLabel>Month</FormLabel>
           <Select
             size="md"
@@ -94,7 +97,7 @@ const DemoParametersBox: React.FC<Props> = () => {
           </Select>
         </FormControl>
       </HStack>
-      <FormControl id="region">
+      <FormControl id="region" isRequired={true}>
         <FormLabel>Region of interest</FormLabel>
         <HStack w="100%">
           <Button
@@ -103,7 +106,10 @@ const DemoParametersBox: React.FC<Props> = () => {
             colorScheme={drawEnabled ? "blue" : "gray"}
             variant={drawEnabled ? "solid" : "outline"}
             rightIcon={<FiPlusSquare />}
-            onClick={() => setDrawEnabled(!drawEnabled)}
+            onClick={() => {
+              if (!drawEnabled) handleDraw();
+              setDrawEnabled(!drawEnabled);
+            }}
           >
             Draw
           </Button>
@@ -115,6 +121,7 @@ const DemoParametersBox: React.FC<Props> = () => {
             rightIcon={<FiXSquare />}
             onClick={() => {
               setRegionGeojson(null);
+              setRegionArea(null);
               setClearRegionTime(new Date().getTime());
             }}
           >
@@ -122,7 +129,7 @@ const DemoParametersBox: React.FC<Props> = () => {
           </Button>
         </HStack>
         <FormHelperText
-          fontWeight={regionTooBig ? "bold" : "normal"}
+          fontWeight={regionArea && regionArea > 0 ? "bold" : "normal"}
           fontSize="0.8em"
           pe="2px"
           textAlign="right"

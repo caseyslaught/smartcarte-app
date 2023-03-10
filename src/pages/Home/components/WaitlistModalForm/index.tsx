@@ -67,7 +67,6 @@ const WaitlistModalForm: React.FC<Props> = ({
           message: values.message,
         });
         if (res.status === 201) {
-          console.log("waitlist signup success");
           setComplete(true);
           actions.resetForm();
           setDisabled(true);

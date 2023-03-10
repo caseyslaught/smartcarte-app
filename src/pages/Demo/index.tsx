@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Flex } from "@chakra-ui/react";
+import { Flex, useMediaQuery } from "@chakra-ui/react";
 import { useNavigate, useParams } from "react-router-dom";
 
 import useTask from "./hooks/useTask";
@@ -13,6 +13,8 @@ const DemoPage: React.FC<Props> = () => {
   const { taskUid } = useParams();
   const [task, taskComplete] = useTask({ taskUid });
 
+  const [isMobile] = useMediaQuery("(max-width: 767px)", { ssr: false });
+
   // if there is a taskUid but it's not valid, redirect to demo page
   useEffect(() => {
     if (taskUid && !task && taskComplete) {
@@ -22,12 +24,13 @@ const DemoPage: React.FC<Props> = () => {
 
   useEffect(() => {
     document.title = "Smart Carte | Demo";
+    window.scrollTo(0, 1);
   }, []);
 
   return (
     <Flex h="100%" w="100%" position="relative">
-      <DemoMap />
-      <DemoSidebar />
+      <DemoMap isMobile={isMobile} />
+      <DemoSidebar isMobile={isMobile} />
     </Flex>
   );
 };
