@@ -13,7 +13,7 @@ import useDemo from "../../hooks/useDemo";
 interface Props {}
 
 const DemoEmailBox: React.FC<Props> = () => {
-  const { email, setEmail } = useDemo();
+  const { formEmail, setFormEmail } = useDemo();
 
   return (
     <VStack align="flex-start" p="1em" w="100%" bg="offWhite" borderRadius="md">
@@ -21,8 +21,8 @@ const DemoEmailBox: React.FC<Props> = () => {
         <FormLabel>Email</FormLabel>
         <Input
           type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          value={formEmail}
+          onChange={(e) => setFormEmail(e.target.value)}
         />
         <Checkbox defaultChecked size={["lg", "sm"]} ps="2px" pt="8px">
           Join our waitlist

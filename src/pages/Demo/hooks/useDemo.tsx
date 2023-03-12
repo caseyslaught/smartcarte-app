@@ -1,8 +1,8 @@
 import { useContext } from "react";
-import { DemoContext } from "../context/demoContext";
+import { DemoStateContext } from "../context/demoStateContext";
 
 const useDemo = () => {
-  return useContext(DemoContext);
+  return useContext(DemoStateContext);
 };
 
 export default useDemo;

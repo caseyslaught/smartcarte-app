@@ -1,41 +1,78 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { polygon } from "@turf/helpers";
+import area from "@turf/area";
 
 import { PublicAPI } from "../../../api";
+import useDemo from "./useDemo";
 
 interface Props {
-  taskUid: string | undefined;
+  taskUid: string | null;
 }
 
 const useTask = ({ taskUid }: Props) => {
-  const [task, setTask] = useState(null);
-  const [complete, setComplete] = useState(false);
+  const {
+    setTaskLoading,
+    setTaskFirstLoaded,
+    setTaskEmail,
+    setTaskStatus,
+    setTaskStatusMessage,
+    setTaskRegionArea,
+    setTaskRegionPolygon,
+  } = useDemo();
 
   useEffect(() => {
     const fetchTask = async () => {
       try {
+        setTaskLoading(true);
         const res = await PublicAPI.get(
           "tasks/get_demo_classification_task/" + taskUid
         );
 
         if (res.status === 200) {
-          setTask(res.data);
+          // taskStatus === null means form, otherwise task
+          // TODO: make sure setting task status
+          const task = res.data;
+          console.log(task); // email, status
+
+          setTaskEmail(task.email);
+          setTaskStatus(task.status);
+          setTaskStatusMessage(task.status_message);
+
+          const regionGeojsonObj = JSON.parse(task.region_geojson);
+          const regionPolygon = polygon(regionGeojsonObj.geometry.coordinates);
+          setTaskRegionPolygon(regionPolygon);
+
+          const regionArea = Math.round(area(regionPolygon) / 1000000);
+          setTaskRegionArea(regionArea);
         }
-      } catch (error) {
+      } catch (error: any) {
         console.log(error);
-        setTask(null);
+        if (error.code === "ERR_NETWORK") {
+          console.log("network error");
+        } else if (error.code === "ERR_BAD_REQUEST") {
+          console.log("task not found");
+        } else if (error.response.status === 500) {
+          console.log("server error");
+        }
       } finally {
-        setComplete(true);
+        setTaskLoading(false);
+        setTaskFirstLoaded(true);
       }
     };
 
-    if (taskUid) {
-      fetchTask();
-    } else {
-      setTask(null);
-    }
-  }, [taskUid]);
+    if (taskUid) fetchTask();
+  }, [
+    taskUid,
+    setTaskLoading,
+    setTaskFirstLoaded,
+    setTaskStatus,
+    setTaskStatusMessage,
+    setTaskEmail,
+    setTaskRegionArea,
+    setTaskRegionPolygon,
+  ]);
 
-  return [task, complete];
+  return [];
 };
 
 export default useTask;

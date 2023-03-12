@@ -1,9 +1,11 @@
 /* eslint import/no-webpack-loader-syntax: off */
 import React, { useRef, MutableRefObject, useEffect } from "react";
-import mapboxgl, { Map } from "mapbox-gl";
+import mapboxgl, { LngLat, Map } from "mapbox-gl";
 import MapboxDraw from "@mapbox/mapbox-gl-draw";
 import { Box } from "@chakra-ui/react";
 import { polygon } from "@turf/helpers";
+import area from "@turf/area";
+import centroid from "@turf/centroid";
 
 import useLocalStorage from "../../../../hooks/useLocalStorage";
 import useDemo from "../../hooks/useDemo";
@@ -19,24 +21,26 @@ mapboxgl.workerClass =
 const MAPBOX_TOKEN = process.env.REACT_APP_MAPBOX_TOKEN;
 mapboxgl.accessToken = MAPBOX_TOKEN || "";
 
-interface Props {
-  isMobile: boolean;
-}
+interface Props {}
 
-const DemoMap: React.FC<Props> = ({ isMobile }) => {
+const DemoMap: React.FC<Props> = () => {
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<Map>(null) as MutableRefObject<Map>;
   const draw = useRef<MapboxDraw>(null) as MutableRefObject<MapboxDraw>;
   const [lat, setLat] = useLocalStorage("lat", -0.72);
   const [lng, setLng] = useLocalStorage("lng", 29.38);
   const [zoom, setZoom] = useLocalStorage("zoom", 12);
+
   const {
-    drawEnabled,
-    setDrawEnabled,
-    regionGeojson,
-    setRegionGeojson,
-    setRegionArea,
-    clearRegionTime,
+    formDrawEnabled,
+    setFormDrawEnabled,
+    setFormRegionArea,
+    formRegionPolygon,
+    setFormRegionPolygon,
+    formClearRegionTime,
+    taskRegionPolygon,
+    setTaskRegionArea,
+    taskStatus,
   } = useDemo();
 
   useEffect(() => {
@@ -53,7 +57,7 @@ const DemoMap: React.FC<Props> = ({ isMobile }) => {
 
     map.current.on("load", () => {});
 
-    map.current.on("move", () => {
+    map.current.on("moveend", () => {
       const center = map.current.getCenter();
       setZoom(map.current.getZoom());
       setLat(center.lat);
@@ -76,47 +80,68 @@ const DemoMap: React.FC<Props> = ({ isMobile }) => {
 
     map.current.on("draw.create", function (feature) {
       const polygonObj = polygon(feature.features[0].geometry.coordinates);
-      setRegionGeojson(polygonObj);
-      setDrawEnabled(false);
+      console.log(polygonObj);
+      setFormRegionPolygon(polygonObj);
+      setFormDrawEnabled(false);
     });
 
-    console.log("regionGeojson", regionGeojson);
-
     // add geoJson if it exists from previous session
-    if (regionGeojson) {
-      console.log("adding geojson", draw.current);
-      draw.current.add(regionGeojson);
+    if (formRegionPolygon) {
+      draw.current.add(formRegionPolygon);
     }
   });
 
   useEffect(() => {
-    if (drawEnabled) {
+    if (formDrawEnabled) {
       draw.current.changeMode("draw_rectangle", {
         areaLimit: 5000 * 1_000_000, // 5000 km
         escapeKeyStopsDrawing: true,
         allowCreateExceeded: false,
         exceedCallsOnEachMove: false,
         exceedCallback: (area: number) => {},
-        areaChangedCallback: (area: number) =>
-          setRegionArea(Math.round(area / 1_000_000)),
+        areaChangedCallback: (area: number) => {
+          setFormRegionArea(Math.round(area / 1_000_000));
+        },
       });
 
       // drawing complete or escape key pressed
       map.current.on("draw.modechange", function ({ mode }) {
-        if (mode === "simple_select") setDrawEnabled(false);
+        if (mode === "simple_select") setFormDrawEnabled(false);
       });
     } else {
       draw.current.changeMode("static");
       // if escape key pressed then clear the region area
-      if (!regionGeojson) setRegionArea(null);
+      if (!formRegionPolygon) setFormRegionArea(null);
     }
-  }, [drawEnabled, regionGeojson, setRegionArea, setDrawEnabled]);
+  }, [
+    formDrawEnabled,
+    setFormDrawEnabled,
+    setFormRegionArea,
+    formRegionPolygon,
+  ]);
 
   useEffect(() => {
-    if (clearRegionTime) {
-      draw.current.deleteAll();
+    if (formClearRegionTime) draw.current.deleteAll();
+  }, [formClearRegionTime]);
+
+  // if valid task and region polygon, draw it on map and fly to it
+  useEffect(() => {
+    if (taskStatus && taskRegionPolygon) {
+      draw.current.add(taskRegionPolygon);
+      const regionArea = area(taskRegionPolygon);
+      setTaskRegionArea(Math.round(regionArea / 1_000_000)); // TODO: maybe need to share state with form?
+
+      // fly to centroid
+      const regionCentroid = centroid(taskRegionPolygon);
+      const coords = regionCentroid.geometry.coordinates;
+      const center = new LngLat(coords[0], coords[1]);
+      /* this is causing an infinte loop */
+      map.current.flyTo({
+        center: center,
+        zoom: 9,
+      });
     }
-  }, [clearRegionTime]);
+  }, [taskStatus, taskRegionPolygon, setTaskRegionArea]);
 
   return <Box ref={mapContainer} h="100%" w="100%"></Box>;
 };

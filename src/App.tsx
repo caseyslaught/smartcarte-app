@@ -4,7 +4,7 @@ import { Routes, Route } from "react-router-dom";
 //import { AppProvider } from "./context/appContext";
 import { AuthProvider } from "./context/authContext";
 
-import { DemoProvider } from "./pages/Demo/context/demoContext";
+import { DemoStateProvider } from "./pages/Demo/context/demoStateContext";
 
 import LayoutDemo from "./layouts/LayoutDemo";
 import LayoutPublic from "./layouts/LayoutPublic";
@@ -21,7 +21,7 @@ import NotFoundPage from "./pages/NotFound";
 const App: React.FC = () => {
   return (
     <AuthProvider>
-      <DemoProvider>
+      <DemoStateProvider>
         <Routes>
           <Route element={<LayoutPublic />}>
             <Route index element={<HomePage />} />
@@ -43,7 +43,7 @@ const App: React.FC = () => {
           </AppProvider>
           */}
         </Routes>
-      </DemoProvider>
+      </DemoStateProvider>
     </AuthProvider>
   );
 };

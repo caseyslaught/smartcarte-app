@@ -1,26 +1,24 @@
 import React, { useEffect } from "react";
 import { Flex, useMediaQuery } from "@chakra-ui/react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 import useTask from "./hooks/useTask";
 import DemoMap from "./components/DemoMap";
 import DemoSidebar from "./components/DemoSidebar";
+import useDemo from "./hooks/useDemo";
 
 interface Props {}
 
 const DemoPage: React.FC<Props> = () => {
-  const navigate = useNavigate();
-  const { taskUid } = useParams();
-  const [task, taskComplete] = useTask({ taskUid });
-
   const [isMobile] = useMediaQuery("(max-width: 767px)", { ssr: false });
+  const { taskUid: paramTaskUid } = useParams();
+  const { taskUid, setTaskUid } = useDemo();
 
-  // if there is a taskUid but it's not valid, redirect to demo page
+  useTask({ taskUid }); // sets task state if taskUid is legit
+
   useEffect(() => {
-    if (taskUid && !task && taskComplete) {
-      navigate("/demo");
-    }
-  }, [taskUid, task, taskComplete, navigate]);
+    if (paramTaskUid) setTaskUid(paramTaskUid);
+  }, [paramTaskUid, setTaskUid]);
 
   useEffect(() => {
     document.title = "Smart Carte | Demo";
@@ -29,7 +27,7 @@ const DemoPage: React.FC<Props> = () => {
 
   return (
     <Flex h="100%" w="100%" position="relative">
-      <DemoMap isMobile={isMobile} />
+      <DemoMap />
       <DemoSidebar isMobile={isMobile} />
     </Flex>
   );

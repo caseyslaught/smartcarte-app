@@ -18,36 +18,35 @@ interface Props {
   handleDraw: () => void;
 }
 
-const DemoParametersBox: React.FC<Props> = ({ handleDraw }) => {
+const DemoFormParametersBox: React.FC<Props> = ({ handleDraw }) => {
   const {
-    year,
-    setYear,
-    month,
-    setMonth,
-    drawEnabled,
-    setDrawEnabled,
-    regionGeojson,
-    regionArea,
-    setRegionArea,
-    setRegionGeojson,
-    setClearRegionTime,
+    formDrawEnabled,
+    setFormDrawEnabled,
+    formMonth,
+    setFormMonth,
+    formYear,
+    setFormYear,
+    formRegionArea,
+    setFormRegionArea,
+    formRegionPolygon,
+    setFormRegionPolygon,
+    setFormClearRegionTime,
   } = useDemo();
 
-  const pastMonths = usePastMonths(year);
+  const pastMonths = usePastMonths(formYear);
 
   let regionSizeString = "0 km² / 5,000 km²";
   let regionTooBig = false;
-  if (regionArea) {
-    let formattedArea = regionArea.toLocaleString();
-    regionTooBig = regionArea > 5000;
+  if (formRegionArea) {
+    let formattedArea = formRegionArea.toLocaleString();
+    regionTooBig = formRegionArea > 5000;
     regionSizeString = `${formattedArea} km² / 5,000 km²`;
   }
 
   useEffect(() => {
-    if (!pastMonths.includes(month)) {
-      setMonth(pastMonths[pastMonths.length - 1]);
-    }
-  }, [year, month, setMonth, pastMonths]);
+    if (!pastMonths.includes(formMonth))
+      setFormMonth(pastMonths[pastMonths.length - 1]);
+  }, [formMonth, setFormMonth, pastMonths]);
 
   return (
     <VStack p="1em" w="100%" bg="offWhite" borderRadius="md">
@@ -71,8 +70,8 @@ const DemoParametersBox: React.FC<Props> = ({ handleDraw }) => {
           <Select
             size="md"
             variant="flushed"
-            onChange={(e) => setYear(parseInt(e.target.value))}
-            value={year}
+            onChange={(e) => setFormYear(parseInt(e.target.value))}
+            value={formYear}
           >
             <option value={2023}>2023</option>
             <option value={2022}>2022</option>
@@ -86,8 +85,8 @@ const DemoParametersBox: React.FC<Props> = ({ handleDraw }) => {
           <Select
             size="md"
             variant="flushed"
-            onChange={(e) => setMonth(parseInt(e.target.value))}
-            value={month}
+            onChange={(e) => setFormMonth(parseInt(e.target.value))}
+            value={formMonth}
           >
             {pastMonths.map((month) => (
               <option key={month} value={month}>
@@ -102,34 +101,34 @@ const DemoParametersBox: React.FC<Props> = ({ handleDraw }) => {
         <HStack w="100%">
           <Button
             flex={1}
-            disabled={regionGeojson !== null}
-            colorScheme={drawEnabled ? "blue" : "gray"}
-            variant={drawEnabled ? "solid" : "outline"}
+            disabled={formRegionPolygon !== null}
+            colorScheme={formDrawEnabled ? "blue" : "gray"}
+            variant={formDrawEnabled ? "solid" : "outline"}
             rightIcon={<FiPlusSquare />}
             onClick={() => {
-              if (!drawEnabled) handleDraw();
-              setDrawEnabled(!drawEnabled);
+              if (!formDrawEnabled) handleDraw();
+              setFormDrawEnabled(!formDrawEnabled);
             }}
           >
             Draw
           </Button>
           <Button
             flex={1}
-            disabled={regionGeojson === null}
+            disabled={formRegionPolygon === null}
             colorScheme="gray"
             variant="outline"
             rightIcon={<FiXSquare />}
             onClick={() => {
-              setRegionGeojson(null);
-              setRegionArea(null);
-              setClearRegionTime(new Date().getTime());
+              setFormRegionPolygon(null);
+              setFormRegionArea(null);
+              setFormClearRegionTime(new Date().getTime());
             }}
           >
             Clear
           </Button>
         </HStack>
         <FormHelperText
-          fontWeight={regionArea && regionArea > 0 ? "bold" : "normal"}
+          fontWeight={formRegionArea && formRegionArea > 0 ? "bold" : "normal"}
           fontSize="0.8em"
           pe="2px"
           textAlign="right"
@@ -142,4 +141,4 @@ const DemoParametersBox: React.FC<Props> = ({ handleDraw }) => {
   );
 };
 
-export default DemoParametersBox;
+export default DemoFormParametersBox;
