@@ -47,11 +47,17 @@ export interface DemoStateType {
   taskFirstLoaded: boolean; // task has been loaded at least once
   setTaskFirstLoaded: (firstLoaded: boolean) => void;
 
+  taskType: string;
+  setTaskType: (type: string) => void;
+
   taskStatus: string | null;
   setTaskStatus: (status: string | null) => void;
 
   taskStatusMessage: string;
   setTaskStatusMessage: (statusMessage: string) => void;
+
+  taskDate: Date | null;
+  setTaskDate: (date: Date | null) => void;
 
   taskEmail: string;
   setTaskEmail: (email: string) => void;
@@ -94,6 +100,8 @@ export const DemoStateProvider: React.FC<Props> = ({ children }) => {
   const [taskFirstLoaded, setTaskFirstLoaded] = useState<boolean>(false);
   const [taskStatus, setTaskStatus] = useState<string | null>(null);
   const [taskStatusMessage, setTaskStatusMessage] = useState<string>("");
+  const [taskType, setTaskType] = useState<string>("");
+  const [taskDate, setTaskDate] = useState<Date | null>(null);
   const [taskEmail, setTaskEmail] = useState<string>("");
   const [taskRegionPolygon, setTaskRegionPolygon] = useState<Feature<
     Polygon,
@@ -131,10 +139,14 @@ export const DemoStateProvider: React.FC<Props> = ({ children }) => {
     setTaskLoading,
     taskFirstLoaded,
     setTaskFirstLoaded,
+    taskType,
+    setTaskType,
     taskStatus,
     setTaskStatus,
     taskStatusMessage,
     setTaskStatusMessage,
+    taskDate,
+    setTaskDate,
     taskEmail,
     setTaskEmail,
     taskRegionPolygon,

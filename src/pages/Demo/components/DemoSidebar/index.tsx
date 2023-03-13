@@ -6,6 +6,7 @@ import useDemo from "../../hooks/useDemo";
 import DemoFormEmailBox from "../DemoFormEmailBox";
 import DemoFormParametersBox from "../DemoFormParametersBox";
 import DemoTaskStatusBox from "../DemoTaskStatusBox";
+import DemoTaskParametersBox from "../DemoTaskParametersBox";
 
 import { isEmailValid } from "../../../../utilities/text";
 
@@ -22,6 +23,7 @@ const DemoSidebar: React.FC<Props> = ({ isMobile }) => {
     formRegionArea,
     formMonth,
     formYear,
+    taskFirstLoaded,
     taskStatus,
   } = useDemo();
 
@@ -73,9 +75,15 @@ const DemoSidebar: React.FC<Props> = ({ isMobile }) => {
 
   const isTask = taskStatus !== null;
 
+  // hide parameters box when task is not loaded
   const taskContent = (
     <>
       <DemoTaskStatusBox />
+      {taskFirstLoaded && (
+        <>
+          <DemoTaskParametersBox />
+        </>
+      )}
     </>
   );
 

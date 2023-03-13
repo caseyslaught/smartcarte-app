@@ -13,6 +13,7 @@ const theme = {
     backgroundLight: "#444444",
     offWhite: "#F3F3F3",
     demoDark: "#4A4A4A",
+    demoMediumDark: "#777d85",
   },
   fontSizes: {},
   layout: {},

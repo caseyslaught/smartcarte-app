@@ -11,6 +11,9 @@ const DemoTaskStatusBox: React.FC<Props> = () => {
 
   let progress = 0;
   switch (taskStatus) {
+    case "loading":
+      progress = 10;
+      break;
     case "pending":
       progress = 20;
       break;

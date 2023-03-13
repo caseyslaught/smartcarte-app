@@ -13,6 +13,8 @@ const useTask = ({ taskUid }: Props) => {
   const {
     setTaskLoading,
     setTaskFirstLoaded,
+    setTaskType,
+    setTaskDate,
     setTaskEmail,
     setTaskStatus,
     setTaskStatusMessage,
@@ -24,6 +26,8 @@ const useTask = ({ taskUid }: Props) => {
     const fetchTask = async () => {
       try {
         setTaskLoading(true);
+        setTaskStatus("loading");
+        setTaskStatusMessage("Loading task");
         const res = await PublicAPI.get(
           "tasks/get_demo_classification_task/" + taskUid
         );
@@ -34,9 +38,11 @@ const useTask = ({ taskUid }: Props) => {
           const task = res.data;
           console.log(task); // email, status
 
+          setTaskType(task.type);
           setTaskEmail(task.email);
           setTaskStatus(task.status);
           setTaskStatusMessage(task.status_message);
+          setTaskDate(new Date(task.date));
 
           const regionGeojsonObj = JSON.parse(task.region_geojson);
           const regionPolygon = polygon(regionGeojsonObj.geometry.coordinates);
@@ -70,6 +76,8 @@ const useTask = ({ taskUid }: Props) => {
     setTaskEmail,
     setTaskRegionArea,
     setTaskRegionPolygon,
+    setTaskDate,
+    setTaskType,
   ]);
 
   return [];
