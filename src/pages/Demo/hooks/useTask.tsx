@@ -18,38 +18,45 @@ const useTask = ({ taskUid }: Props) => {
     setTaskEmail,
     setTaskStatus,
     setTaskStatusMessage,
+    setTaskStatusLongMessage,
     setTaskRegionArea,
     setTaskRegionPolygon,
+    setTaskStatistics,
+    setTaskImageryHref,
+    setTaskImageryTilesHref,
+    setTaskClassificationHref,
+    setTaskClassificationTilesHref,
   } = useDemo();
 
   useEffect(() => {
     const fetchTask = async () => {
       try {
         setTaskLoading(true);
-        setTaskStatus("loading");
-        setTaskStatusMessage("Loading task");
         const res = await PublicAPI.get(
           "tasks/get_demo_classification_task/" + taskUid
         );
 
         if (res.status === 200) {
-          // taskStatus === null means form, otherwise task
-          // TODO: make sure setting task status
           const task = res.data;
-          console.log(task); // email, status
-
           setTaskType(task.type);
           setTaskEmail(task.email);
           setTaskStatus(task.status);
           setTaskStatusMessage(task.status_message);
+          setTaskStatusLongMessage(task.status_long_message);
           setTaskDate(new Date(task.date));
+          setTaskImageryHref(task.imagery_tif_href);
+          setTaskImageryTilesHref(task.imagery_tiles_href);
+          setTaskClassificationHref(task.landcover_tif_href);
+          setTaskClassificationTilesHref(task.landcover_tiles_href);
 
           const regionGeojsonObj = JSON.parse(task.region_geojson);
           const regionPolygon = polygon(regionGeojsonObj.geometry.coordinates);
-          setTaskRegionPolygon(regionPolygon);
-
           const regionArea = Math.round(area(regionPolygon) / 1000000);
+          setTaskRegionPolygon(regionPolygon);
           setTaskRegionArea(regionArea);
+
+          const taskStatisticsObj = JSON.parse(task.statistics_json);
+          setTaskStatistics(taskStatisticsObj);
         }
       } catch (error: any) {
         console.log(error);
@@ -66,18 +73,34 @@ const useTask = ({ taskUid }: Props) => {
       }
     };
 
-    if (taskUid) fetchTask();
+    if (taskUid) {
+      fetchTask();
+      const intervalId = setInterval(() => {
+        fetchTask();
+      }, 10000);
+
+      return () => {
+        console.log("clearing interval");
+        clearInterval(intervalId);
+      };
+    }
   }, [
     taskUid,
     setTaskLoading,
     setTaskFirstLoaded,
     setTaskStatus,
     setTaskStatusMessage,
+    setTaskStatusLongMessage,
     setTaskEmail,
     setTaskRegionArea,
     setTaskRegionPolygon,
     setTaskDate,
     setTaskType,
+    setTaskStatistics,
+    setTaskImageryHref,
+    setTaskImageryTilesHref,
+    setTaskClassificationHref,
+    setTaskClassificationTilesHref,
   ]);
 
   return [];

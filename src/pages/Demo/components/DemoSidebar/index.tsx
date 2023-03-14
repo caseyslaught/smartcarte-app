@@ -7,6 +7,8 @@ import DemoFormEmailBox from "../DemoFormEmailBox";
 import DemoFormParametersBox from "../DemoFormParametersBox";
 import DemoTaskStatusBox from "../DemoTaskStatusBox";
 import DemoTaskParametersBox from "../DemoTaskParametersBox";
+import DemoTaskLegendBox from "../DemoTaskLegendBox";
+import DemoTaskDownloadBox from "../DemoTaskDownloadBox";
 
 import { isEmailValid } from "../../../../utilities/text";
 
@@ -23,8 +25,8 @@ const DemoSidebar: React.FC<Props> = ({ isMobile }) => {
     formRegionArea,
     formMonth,
     formYear,
-    taskFirstLoaded,
     taskStatus,
+    taskRegionPolygon,
   } = useDemo();
 
   /*** form ***/
@@ -73,19 +75,33 @@ const DemoSidebar: React.FC<Props> = ({ isMobile }) => {
 
   /*** task ***/
 
-  const isTask = taskStatus !== null;
+  const isTask = taskRegionPolygon !== null; // is task or form
 
-  // hide parameters box when task is not loaded
-  const taskContent = (
-    <>
-      <DemoTaskStatusBox />
-      {taskFirstLoaded && (
-        <>
-          <DemoTaskParametersBox />
-        </>
-      )}
-    </>
-  );
+  let taskContent = <DemoTaskStatusBox />;
+  if (taskStatus === "pending" || taskStatus === "running") {
+    taskContent = (
+      <>
+        <DemoTaskStatusBox />
+        <DemoTaskParametersBox />
+      </>
+    );
+  } else if (taskStatus === "complete") {
+    taskContent = (
+      <>
+        <DemoTaskStatusBox />
+        <DemoTaskParametersBox />
+        {!isMobile && <DemoTaskDownloadBox />}
+        <DemoTaskLegendBox />
+      </>
+    );
+  } else if (taskStatus === "failed") {
+    taskContent = (
+      <>
+        <DemoTaskStatusBox />
+        <DemoTaskParametersBox />
+      </>
+    );
+  }
 
   return (
     <HStack

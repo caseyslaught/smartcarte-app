@@ -38,6 +38,8 @@ const DemoMap: React.FC<Props> = () => {
     formRegionPolygon,
     setFormRegionPolygon,
     formClearRegionTime,
+    taskFirstFlyTo,
+    setTaskFirstFlyTo,
     taskRegionPolygon,
     setTaskRegionArea,
     taskStatus,
@@ -80,7 +82,6 @@ const DemoMap: React.FC<Props> = () => {
 
     map.current.on("draw.create", function (feature) {
       const polygonObj = polygon(feature.features[0].geometry.coordinates);
-      console.log(polygonObj);
       setFormRegionPolygon(polygonObj);
       setFormDrawEnabled(false);
     });
@@ -126,7 +127,8 @@ const DemoMap: React.FC<Props> = () => {
 
   // if valid task and region polygon, draw it on map and fly to it
   useEffect(() => {
-    if (taskStatus && taskRegionPolygon) {
+    if (taskStatus && taskRegionPolygon && !taskFirstFlyTo) {
+      console.log("here");
       draw.current.add(taskRegionPolygon);
       const regionArea = area(taskRegionPolygon);
       setTaskRegionArea(Math.round(regionArea / 1_000_000)); // TODO: maybe need to share state with form?
@@ -140,8 +142,16 @@ const DemoMap: React.FC<Props> = () => {
         center: center,
         zoom: 9,
       });
+
+      setTaskFirstFlyTo(true);
     }
-  }, [taskStatus, taskRegionPolygon, setTaskRegionArea]);
+  }, [
+    taskStatus,
+    taskRegionPolygon,
+    setTaskRegionArea,
+    taskFirstFlyTo,
+    setTaskFirstFlyTo,
+  ]);
 
   return <Box ref={mapContainer} h="100%" w="100%"></Box>;
 };

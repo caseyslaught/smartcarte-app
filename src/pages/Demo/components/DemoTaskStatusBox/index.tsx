@@ -1,36 +1,35 @@
 import React from "react";
-import { Progress, Text, VStack } from "@chakra-ui/react";
+import { Button, Progress, Text, VStack } from "@chakra-ui/react";
+
 import useDemo from "../../hooks/useDemo";
 
 interface Props {}
 
 const DemoTaskStatusBox: React.FC<Props> = () => {
-  const { taskStatus, taskStatusMessage } = useDemo();
+  const { taskStatus, taskStatusMessage, taskStatusLongMessage } = useDemo();
 
-  console.log("taskStatus", taskStatus);
-
+  let color = "blue";
   let progress = 0;
-  switch (taskStatus) {
-    case "loading":
-      progress = 10;
-      break;
-    case "pending":
-      progress = 20;
-      break;
-    case "fetching_imagery":
+  if (taskStatus === "loading") {
+    progress = 10;
+  } else if (taskStatus === "pending") {
+    progress = 20;
+  } else if (taskStatus === "running") {
+    if (taskStatusMessage === "Fetching imagery") {
       progress = 40;
-      break;
-    case "processing_imagery":
+    } else if (taskStatusMessage === "Processing imagery") {
       progress = 60;
-      break;
-    case "uploading_assets":
+    } else if (taskStatusMessage === "Uploading assets") {
       progress = 80;
-      break;
-    case "complete":
-      progress = 100;
-      break;
-    default:
-      progress = 0;
+    }
+  } else if (taskStatus === "complete") {
+    progress = 100;
+  } else if (taskStatus === "cancelled") {
+    color = "gray";
+    progress = 100;
+  } else if (taskStatus === "failed") {
+    color = "red";
+    progress = 100;
   }
 
   return (
@@ -39,13 +38,33 @@ const DemoTaskStatusBox: React.FC<Props> = () => {
       <Progress
         background="gray.200"
         borderRadius="md"
-        colorScheme="blue"
-        hasStripe={true}
-        isAnimated={true}
+        colorScheme={color}
+        hasStripe={progress !== 100}
+        isAnimated={progress !== 100}
         size="sm"
         value={progress}
         w="100%"
       />
+      {taskStatus === "failed" && (
+        <Text fontSize="sm">{taskStatusLongMessage}</Text>
+      )}
+
+      {(taskStatus === "failed" || taskStatus === "cancelled") && (
+        <Button
+          colorScheme="blue"
+          variant="outline"
+          w="100%"
+          _hover={{
+            bg: "blue.600",
+            color: "white",
+          }}
+          onClick={() => {
+            window.location.href = "/demo";
+          }}
+        >
+          Create new task
+        </Button>
+      )}
     </VStack>
   );
 };
