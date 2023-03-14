@@ -13,7 +13,12 @@ import useDemo from "../../hooks/useDemo";
 interface Props {}
 
 const DemoEmailBox: React.FC<Props> = () => {
-  const { formEmail, setFormEmail } = useDemo();
+  const {
+    formEmail,
+    setFormEmail,
+    formWaitlistChecked,
+    setFormWaitlistChecked,
+  } = useDemo();
 
   return (
     <VStack align="flex-start" p="1em" w="100%" bg="offWhite" borderRadius="md">
@@ -24,7 +29,13 @@ const DemoEmailBox: React.FC<Props> = () => {
           value={formEmail}
           onChange={(e) => setFormEmail(e.target.value)}
         />
-        <Checkbox defaultChecked size={["lg", "sm"]} ps="2px" pt="8px">
+        <Checkbox
+          size={["lg", "sm"]}
+          ps="2px"
+          pt="8px"
+          isChecked={formWaitlistChecked}
+          onChange={(e) => setFormWaitlistChecked(e.target.checked)}
+        >
           Join our waitlist
         </Checkbox>
         <FormHelperText fontSize="0.6em">

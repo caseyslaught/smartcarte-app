@@ -1,6 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Box, HStack, IconButton, VStack, Button } from "@chakra-ui/react";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
+import { useNavigate } from "react-router-dom";
+
+import { PublicAPI } from "../../../../api";
 
 import useDemo from "../../hooks/useDemo";
 import DemoFormEmailBox from "../DemoFormEmailBox";
@@ -17,10 +20,14 @@ interface Props {
 }
 
 const DemoSidebar: React.FC<Props> = ({ isMobile }) => {
+  const navigate = useNavigate();
   const isMobileRef = useRef(isMobile);
   const [isExpanded, setIsExpanded] = useState(!isMobile);
+  const [isFormSubmitting, setIsFormSubmitting] = useState(false);
   const {
+    formTid,
     formEmail,
+    formWaitlistChecked,
     formRegionPolygon,
     formRegionArea,
     formMonth,
@@ -37,11 +44,7 @@ const DemoSidebar: React.FC<Props> = ({ isMobile }) => {
   }
 
   const formStartTaskEnabled =
-    formMonth &&
-    formYear &&
-    !formRegionTooBig &&
-    formEmail &&
-    isEmailValid(formEmail);
+    !formRegionTooBig && formEmail && isEmailValid(formEmail);
 
   // open sidebar when region is drawn only on mobile
   useEffect(() => {
@@ -61,11 +64,36 @@ const DemoSidebar: React.FC<Props> = ({ isMobile }) => {
       <DemoFormEmailBox />
       <Box w="100%" borderRadius="md">
         <Button
-          disabled={!formStartTaskEnabled}
+          disabled={!formStartTaskEnabled || isFormSubmitting}
+          isLoading={isFormSubmitting}
           colorScheme="blue"
           variant="solid"
           w="100%"
           rightIcon={<FiChevronRight />}
+          onClick={async () => {
+            try {
+              setIsFormSubmitting(true);
+              const res = await PublicAPI.post(
+                "tasks/create_demo_classification_task/",
+                {
+                  date: formYear + "-" + (formMonth + 1) + "-28",
+                  region_geojson: JSON.stringify(formRegionPolygon),
+                  email: formEmail,
+                  add_to_waitlist: formWaitlistChecked,
+                  tid: formTid,
+                }
+              );
+
+              if (res.status === 201) {
+                // window.location.href = "/demo/" + res.data.task_uid;
+                navigate("/demo/" + res.data.task_uid);
+              }
+            } catch (error) {
+              console.log(error);
+            } finally {
+              setIsFormSubmitting(false);
+            }
+          }}
         >
           Start task
         </Button>
@@ -74,8 +102,6 @@ const DemoSidebar: React.FC<Props> = ({ isMobile }) => {
   );
 
   /*** task ***/
-
-  const isTask = taskRegionPolygon !== null; // is task or form
 
   let taskContent = <DemoTaskStatusBox />;
   if (taskStatus === "pending" || taskStatus === "running") {
@@ -90,8 +116,8 @@ const DemoSidebar: React.FC<Props> = ({ isMobile }) => {
       <>
         <DemoTaskStatusBox />
         <DemoTaskParametersBox />
-        {!isMobile && <DemoTaskDownloadBox />}
         <DemoTaskLegendBox />
+        {!isMobile && <DemoTaskDownloadBox />}
       </>
     );
   } else if (taskStatus === "failed") {
@@ -102,6 +128,8 @@ const DemoSidebar: React.FC<Props> = ({ isMobile }) => {
       </>
     );
   }
+
+  const isTask = taskRegionPolygon !== null; // is task or form
 
   return (
     <HStack

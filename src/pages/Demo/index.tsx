@@ -14,8 +14,6 @@ const DemoPage: React.FC<Props> = () => {
   const { taskUid: paramTaskUid } = useParams();
   const { taskUid, setTaskUid } = useDemo();
 
-  console.log("taskUid", taskUid);
-
   useTask({ taskUid }); // sets task state if taskUid is legit
 
   useEffect(() => {

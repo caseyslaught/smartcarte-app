@@ -16,6 +16,9 @@ export interface DemoStateType {
   formEmail: string;
   setFormEmail: (email: string) => void;
 
+  formWaitlistChecked: boolean;
+  setFormWaitlistChecked: (waitlistChecked: boolean) => void;
+
   formRegionPolygon: Feature<Polygon, Properties> | null;
   setFormRegionPolygon: (
     regionPolygon: Feature<Polygon, Properties> | null
@@ -104,8 +107,9 @@ interface Props {
 
 export const DemoStateProvider: React.FC<Props> = ({ children }) => {
   const [formYear, setFormYear] = useState<number>(2023);
-  const [formMonth, setFormMonth] = useState<number>(1);
+  const [formMonth, setFormMonth] = useState<number>(2);
   const [formEmail, setFormEmail] = useState<string>("");
+  const [formWaitlistChecked, setFormWaitlistChecked] = useState<boolean>(true);
   const [formRegionPolygon, setFormRegionPolygon] = useState<Feature<
     Polygon,
     Properties
@@ -158,6 +162,8 @@ export const DemoStateProvider: React.FC<Props> = ({ children }) => {
     setFormMonth,
     formEmail,
     setFormEmail,
+    formWaitlistChecked,
+    setFormWaitlistChecked,
     formRegionPolygon,
     setFormRegionPolygon,
     formRegionArea,

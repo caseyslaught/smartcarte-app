@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { polygon } from "@turf/helpers";
 import area from "@turf/area";
+import { useNavigate } from "react-router-dom";
 
 import { PublicAPI } from "../../../api";
 import useDemo from "./useDemo";
@@ -10,6 +11,7 @@ interface Props {
 }
 
 const useTask = ({ taskUid }: Props) => {
+  const navigate = useNavigate();
   const {
     setTaskLoading,
     setTaskFirstLoaded,
@@ -30,6 +32,8 @@ const useTask = ({ taskUid }: Props) => {
 
   useEffect(() => {
     const fetchTask = async () => {
+      console.log("fetching task");
+
       try {
         setTaskLoading(true);
         const res = await PublicAPI.get(
@@ -55,8 +59,10 @@ const useTask = ({ taskUid }: Props) => {
           setTaskRegionPolygon(regionPolygon);
           setTaskRegionArea(regionArea);
 
-          const taskStatisticsObj = JSON.parse(task.statistics_json);
-          setTaskStatistics(taskStatisticsObj);
+          if (task.statistics_json !== "") {
+            const taskStatisticsObj = JSON.parse(task.statistics_json);
+            setTaskStatistics(taskStatisticsObj);
+          }
         }
       } catch (error: any) {
         console.log(error);
@@ -64,7 +70,8 @@ const useTask = ({ taskUid }: Props) => {
           console.log("network error");
         } else if (error.code === "ERR_BAD_REQUEST") {
           console.log("task not found");
-        } else if (error.response.status === 500) {
+          navigate("/demo");
+        } else if (error.response?.status === 500) {
           console.log("server error");
         }
       } finally {
@@ -101,6 +108,7 @@ const useTask = ({ taskUid }: Props) => {
     setTaskImageryTilesHref,
     setTaskClassificationHref,
     setTaskClassificationTilesHref,
+    navigate,
   ]);
 
   return [];

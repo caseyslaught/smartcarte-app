@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, Flex, Image } from "@chakra-ui/react"; // IconButton, HStack
-//import { FiInfo, FiChevronLeft } from "react-icons/fi";
-//import { Link } from "react-router-dom";
+// import { FiInfo, FiChevronLeft } from "react-icons/fi";
+// import { Link } from "react-router-dom";
 
 import LogoDemoDark from "../../assets/images/logo_demo_dark.png";
 
