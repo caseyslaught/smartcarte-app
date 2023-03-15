@@ -13,6 +13,7 @@ interface Props {
 const useTask = ({ taskUid }: Props) => {
   const navigate = useNavigate();
   const {
+    setTaskUid,
     setTaskLoading,
     setTaskFirstLoaded,
     setTaskType,
@@ -72,7 +73,9 @@ const useTask = ({ taskUid }: Props) => {
           console.log("network error");
         } else if (error.code === "ERR_BAD_REQUEST") {
           console.log("task not found");
-          navigate("/demo");
+          setTaskUid(null); // reset important task state
+          setTaskRegionPolygon(null);
+          navigate("/demo", { replace: true });
         } else if (error.response?.status === 500) {
           console.log("server error");
         }
@@ -94,6 +97,7 @@ const useTask = ({ taskUid }: Props) => {
     }
   }, [
     taskUid,
+    setTaskUid,
     setTaskLoading,
     setTaskFirstLoaded,
     setTaskStatus,

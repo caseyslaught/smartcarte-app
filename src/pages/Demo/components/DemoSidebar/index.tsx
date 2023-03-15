@@ -41,6 +41,7 @@ const DemoSidebar: React.FC<Props> = ({ isMobile }) => {
     formRegionArea,
     formMonth,
     formYear,
+    taskUid,
     taskStatus,
     taskRegionPolygon,
     taskFirstLoaded,
@@ -95,8 +96,7 @@ const DemoSidebar: React.FC<Props> = ({ isMobile }) => {
               );
 
               if (res.status === 201) {
-                // window.location.href = "/demo/" + res.data.task_uid;
-                navigate("/demo/" + res.data.task_uid);
+                navigate("/demo/" + res.data.task_uid, { replace: true });
               }
             } catch (error) {
               console.log(error);
@@ -141,7 +141,7 @@ const DemoSidebar: React.FC<Props> = ({ isMobile }) => {
 
   const isTask = taskRegionPolygon !== null; // is task or form
 
-  if (!taskFirstLoaded) {
+  if (!taskFirstLoaded && taskUid !== null) {
     return (
       <Square
         bg="offWhite"
