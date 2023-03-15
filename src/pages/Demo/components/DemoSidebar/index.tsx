@@ -174,7 +174,7 @@ const DemoSidebar: React.FC<Props> = ({ isMobile }) => {
       top="40px"
       height="calc(100vh - 40px)"
       transition="right 0.3s ease-in-out"
-      pointerEvents="none"
+      pointerEvents={isMobile ? "auto" : "none"}
       color="demoDark"
     >
       <IconButton
@@ -197,9 +197,9 @@ const DemoSidebar: React.FC<Props> = ({ isMobile }) => {
         ref={scrollRef}
         spacing={2}
         w="280px"
-        pointerEvents="auto"
         height="100%"
         overflowY="scroll"
+        pointerEvents={isMobile ? "auto" : "none"}
         py="10px"
       >
         {isTask ? taskContent : formContent}
