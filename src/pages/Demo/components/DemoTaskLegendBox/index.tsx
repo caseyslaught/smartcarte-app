@@ -8,6 +8,8 @@ interface Props {}
 const DemoTaskLegendBox: React.FC<Props> = () => {
   const { taskStatistics } = useDemo();
 
+  if (!taskStatistics) return null;
+
   return (
     <VStack
       p="1em"
