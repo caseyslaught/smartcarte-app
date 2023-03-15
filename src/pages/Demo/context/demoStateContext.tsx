@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useState } from "react";
+import React, { createContext, useCallback, useEffect, useState } from "react";
 import { Feature, Polygon, Properties } from "@turf/helpers";
 import { v4 as uuidv4 } from "uuid";
 
@@ -95,6 +95,9 @@ export interface DemoStateType {
   setTaskClassificationTilesHref: (
     classificationTilesHref: string | null
   ) => void;
+
+  clearFormState: () => void;
+  clearTaskState: () => void;
 }
 
 export const DemoStateContext = createContext<DemoStateType>(
@@ -105,9 +108,15 @@ interface Props {
   children: React.ReactNode;
 }
 
+const now = new Date();
+const DEFAULT_FORM_YEAR = now.getFullYear();
+const DEFAULT_FORM_MONTH = now.getMonth();
+const DEFAULT_TASK_STATUS = "loading";
+const DEFAULT_TASK_STATUS_MESSAGE = "Loading task";
+
 export const DemoStateProvider: React.FC<Props> = ({ children }) => {
-  const [formYear, setFormYear] = useState<number>(2023);
-  const [formMonth, setFormMonth] = useState<number>(2);
+  const [formYear, setFormYear] = useState<number>(DEFAULT_FORM_YEAR);
+  const [formMonth, setFormMonth] = useState<number>(DEFAULT_FORM_MONTH);
   const [formEmail, setFormEmail] = useState<string>("");
   const [formWaitlistChecked, setFormWaitlistChecked] = useState<boolean>(true);
   const [formRegionPolygon, setFormRegionPolygon] = useState<Feature<
@@ -126,9 +135,12 @@ export const DemoStateProvider: React.FC<Props> = ({ children }) => {
   const [taskLoading, setTaskLoading] = useState<boolean>(false);
   const [taskFirstLoaded, setTaskFirstLoaded] = useState<boolean>(false);
   const [taskFirstFlyTo, setTaskFirstFlyTo] = useState<boolean>(false);
-  const [taskStatus, setTaskStatus] = useState<string | null>("loading");
-  const [taskStatusMessage, setTaskStatusMessage] =
-    useState<string>("Loading task");
+  const [taskStatus, setTaskStatus] = useState<string | null>(
+    DEFAULT_TASK_STATUS
+  );
+  const [taskStatusMessage, setTaskStatusMessage] = useState<string>(
+    DEFAULT_TASK_STATUS_MESSAGE
+  );
   const [taskStatusLongMessage, setTaskStatusLongMessage] =
     useState<string>("");
   const [taskType, setTaskType] = useState<string>("");
@@ -155,7 +167,43 @@ export const DemoStateProvider: React.FC<Props> = ({ children }) => {
     setFormTid(formTid);
   }, [formTid, setFormTid]);
 
+  const clearFormState = useCallback(() => {
+    console.log("clearing form state");
+    setFormYear(DEFAULT_FORM_YEAR);
+    setFormMonth(DEFAULT_FORM_MONTH);
+    setFormEmail("");
+    setFormWaitlistChecked(true);
+    setFormRegionPolygon(null);
+    setFormRegionArea(null);
+    setFormClearRegionTime(null);
+    setFormDrawEnabled(false);
+    setFormSubmitting(false);
+  }, []);
+
+  const clearTaskState = useCallback(() => {
+    console.log("clearing task state");
+    setTaskUid(null);
+    setTaskLoading(false);
+    setTaskFirstLoaded(false);
+    setTaskFirstFlyTo(false);
+    setTaskStatus(DEFAULT_TASK_STATUS);
+    setTaskStatusMessage(DEFAULT_TASK_STATUS_MESSAGE);
+    setTaskStatusLongMessage("");
+    setTaskType("");
+    setTaskDate(null);
+    setTaskEmail("");
+    setTaskRegionPolygon(null);
+    setTaskRegionArea(null);
+    setTaskStatistics(null);
+    setTaskImageryHref(null);
+    setTaskImageryTilesHref(null);
+    setTaskClassificationHref(null);
+    setTaskClassificationTilesHref(null);
+  }, []);
+
   const value = {
+    clearFormState,
+    clearTaskState,
     formYear,
     setFormYear,
     formMonth,

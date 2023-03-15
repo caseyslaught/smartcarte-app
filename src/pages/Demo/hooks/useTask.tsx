@@ -8,11 +8,13 @@ import useDemo from "./useDemo";
 
 interface Props {
   taskUid: string | null;
+  paramTaskUid: string | undefined;
 }
 
-const useTask = ({ taskUid }: Props) => {
+const useTask = ({ taskUid, paramTaskUid }: Props) => {
   const navigate = useNavigate();
   const {
+    clearTaskState,
     setTaskUid,
     setTaskLoading,
     setTaskFirstLoaded,
@@ -31,9 +33,17 @@ const useTask = ({ taskUid }: Props) => {
     setTaskClassificationTilesHref,
   } = useDemo();
 
+  /*
+  useEffect(() => {
+    if (!taskUid) {
+      clearTaskState();
+    }
+  }, [taskUid, clearTaskState]);
+  */
+
   useEffect(() => {
     const fetchTask = async () => {
-      console.log("fetching task");
+      console.log("fetching task", taskUid);
 
       try {
         setTaskLoading(true);
@@ -73,8 +83,7 @@ const useTask = ({ taskUid }: Props) => {
           console.log("network error");
         } else if (error.code === "ERR_BAD_REQUEST") {
           console.log("task not found");
-          setTaskUid(null); // reset important task state
-          setTaskRegionPolygon(null);
+          clearTaskState();
           navigate("/demo", { replace: true });
         } else if (error.response?.status === 500) {
           console.log("server error");
@@ -84,7 +93,8 @@ const useTask = ({ taskUid }: Props) => {
       }
     };
 
-    if (taskUid) {
+    // need paramTaskUid for case where navigating from /demo/:taskUid to /demo
+    if (taskUid && paramTaskUid) {
       fetchTask();
       const intervalId = setInterval(() => {
         fetchTask();
@@ -92,11 +102,16 @@ const useTask = ({ taskUid }: Props) => {
 
       return () => {
         console.log("clearing interval");
+        clearTaskState();
         clearInterval(intervalId);
       };
+    } else {
+      clearTaskState();
     }
   }, [
+    clearTaskState,
     taskUid,
+    paramTaskUid,
     setTaskUid,
     setTaskLoading,
     setTaskFirstLoaded,

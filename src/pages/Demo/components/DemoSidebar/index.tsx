@@ -34,6 +34,7 @@ const DemoSidebar: React.FC<Props> = ({ isMobile }) => {
   const [isExpanded, setIsExpanded] = useState(!isMobile);
   const [isFormSubmitting, setIsFormSubmitting] = useState(false);
   const {
+    clearFormState,
     formTid,
     formEmail,
     formWaitlistChecked,
@@ -96,6 +97,7 @@ const DemoSidebar: React.FC<Props> = ({ isMobile }) => {
               );
 
               if (res.status === 201) {
+                clearFormState();
                 navigate("/demo/" + res.data.task_uid, { replace: true });
               }
             } catch (error) {

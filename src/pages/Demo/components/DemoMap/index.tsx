@@ -132,6 +132,8 @@ const DemoMap: React.FC<Props> = () => {
       draw.current.add(taskRegionPolygon);
       const regionArea = area(taskRegionPolygon);
       setTaskRegionArea(Math.round(regionArea / 1_000_000));
+    } else {
+      draw.current.deleteAll();
     }
   }, [taskStatus, taskRegionPolygon, setTaskRegionArea]);
 

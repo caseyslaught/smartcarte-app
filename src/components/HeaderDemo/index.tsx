@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, Flex, Image } from "@chakra-ui/react"; // IconButton, HStack
 // import { FiInfo, FiChevronLeft } from "react-icons/fi";
-// import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import LogoDemoDark from "../../assets/images/logo_demo_dark.png";
 
@@ -48,7 +48,9 @@ const HeaderDemo: React.FC<Props> = () => {
       */}
 
       <Box h="60%">
-        <Image h="100%" src={LogoDemoDark} alt="logo" />
+        <Link to="/demo" replace={true}>
+          <Image h="100%" src={LogoDemoDark} alt="logo" />
+        </Link>
       </Box>
     </Flex>
   );
