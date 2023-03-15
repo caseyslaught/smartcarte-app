@@ -63,6 +63,8 @@ const useTask = ({ taskUid }: Props) => {
             const taskStatisticsObj = JSON.parse(task.statistics_json);
             setTaskStatistics(taskStatisticsObj);
           }
+
+          setTaskFirstLoaded(true);
         }
       } catch (error: any) {
         console.log(error);
@@ -76,7 +78,6 @@ const useTask = ({ taskUid }: Props) => {
         }
       } finally {
         setTaskLoading(false);
-        setTaskFirstLoaded(true);
       }
     };
 

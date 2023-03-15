@@ -1,5 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Box, HStack, IconButton, VStack, Button } from "@chakra-ui/react";
+import {
+  Box,
+  HStack,
+  IconButton,
+  VStack,
+  Button,
+  Spinner,
+  Square,
+} from "@chakra-ui/react";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 
@@ -22,6 +30,7 @@ interface Props {
 const DemoSidebar: React.FC<Props> = ({ isMobile }) => {
   const navigate = useNavigate();
   const isMobileRef = useRef(isMobile);
+  const scrollRef = useRef<HTMLDivElement | null>(null);
   const [isExpanded, setIsExpanded] = useState(!isMobile);
   const [isFormSubmitting, setIsFormSubmitting] = useState(false);
   const {
@@ -34,6 +43,7 @@ const DemoSidebar: React.FC<Props> = ({ isMobile }) => {
     formYear,
     taskStatus,
     taskRegionPolygon,
+    taskFirstLoaded,
   } = useDemo();
 
   /*** form ***/
@@ -131,16 +141,35 @@ const DemoSidebar: React.FC<Props> = ({ isMobile }) => {
 
   const isTask = taskRegionPolygon !== null; // is task or form
 
+  if (!taskFirstLoaded) {
+    return (
+      <Square
+        bg="offWhite"
+        borderRadius="md"
+        position="fixed"
+        top="50px"
+        right="10px"
+        size="40px"
+      >
+        <Spinner
+          thickness="2px"
+          color="blue.500"
+          emptyColor="gray.200"
+          size="md"
+        />
+      </Square>
+    );
+  }
+
   return (
     <HStack
       spacing={2}
       align="flex-start"
       justify="flex-start"
-      position="absolute"
-      right={isExpanded ? "0px" : "-290px"}
-      top="0px"
-      me="10px"
-      mt="10px"
+      position="fixed"
+      right={isExpanded ? "10px" : "-280px"}
+      top="40px"
+      height="calc(100vh - 40px)"
       transition="right 0.3s ease-in-out"
       color="demoDark"
       pointerEvents="none"
@@ -150,12 +179,26 @@ const DemoSidebar: React.FC<Props> = ({ isMobile }) => {
         pointerEvents="auto"
         background="offWhite"
         color="demoDark"
-        onClick={() => setIsExpanded(!isExpanded)}
+        onClick={() => {
+          if (!isExpanded && scrollRef.current)
+            scrollRef.current.scrollTo(0, 0);
+          setIsExpanded(!isExpanded);
+        }}
         fontSize="xl"
+        mt="10px"
         icon={isExpanded ? <FiChevronRight /> : <FiChevronLeft />}
       />
 
-      <VStack spacing={2} w="280px" pointerEvents="auto">
+      <VStack
+        className="scrollbar"
+        ref={scrollRef}
+        spacing={2}
+        w="280px"
+        pointerEvents="auto"
+        height="100%"
+        overflowY="scroll"
+        py="10px"
+      >
         {isTask ? taskContent : formContent}
       </VStack>
     </HStack>

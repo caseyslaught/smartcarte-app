@@ -45,6 +45,14 @@ const theme = {
       ".mapboxgl-ctrl-logo": {
         display: "none !important",
       },
+      ".scrollbar": {
+        "-webkit-overflow-scrolling": "touch",
+        "&::-webkit-scrollbar": {
+          display: "none",
+        },
+        "scrollbar-width": "none",
+        "-ms-overflow-style": "none",
+      },
     }),
   },
 };
