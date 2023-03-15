@@ -13,7 +13,13 @@ const DemoTaskDownloadBox: React.FC<Props> = () => {
   if (!taskImageryHref && !taskClassificationHref) return null;
 
   return (
-    <VStack p="1em" w="100%" bg="offWhite" borderRadius="md">
+    <VStack
+      p="1em"
+      w="100%"
+      bg="offWhite"
+      borderRadius="md"
+      pointerEvents="auto"
+    >
       {taskImageryHref && (
         <Link href={taskImageryHref} download w="100%">
           <Button

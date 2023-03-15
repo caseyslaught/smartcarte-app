@@ -9,7 +9,14 @@ const DemoTaskLegendBox: React.FC<Props> = () => {
   const { taskStatistics } = useDemo();
 
   return (
-    <VStack p="1em" w="100%" bg="offWhite" borderRadius="md" spacing={1}>
+    <VStack
+      p="1em"
+      w="100%"
+      bg="offWhite"
+      spacing={1}
+      borderRadius="md"
+      pointerEvents="auto"
+    >
       {Object.keys(taskStatistics).map((className) => {
         return (
           <LegendRow

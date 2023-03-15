@@ -49,7 +49,13 @@ const DemoFormParametersBox: React.FC<Props> = ({ handleDraw }) => {
   }, [formMonth, setFormMonth, pastMonths]);
 
   return (
-    <VStack p="1em" w="100%" bg="offWhite" borderRadius="md">
+    <VStack
+      p="1em"
+      w="100%"
+      bg="offWhite"
+      borderRadius="md"
+      pointerEvents="auto"
+    >
       <FormControl id="taskType" isRequired={true}>
         <FormLabel>Task type</FormLabel>
         <Select

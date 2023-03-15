@@ -74,7 +74,7 @@ const DemoSidebar: React.FC<Props> = ({ isMobile }) => {
     <>
       <DemoFormParametersBox handleDraw={handleDraw} />
       <DemoFormEmailBox />
-      <Box w="100%" borderRadius="md">
+      <Box w="100%" borderRadius="md" pointerEvents="auto">
         <Button
           disabled={!formStartTaskEnabled || isFormSubmitting}
           isLoading={isFormSubmitting}
@@ -84,6 +84,7 @@ const DemoSidebar: React.FC<Props> = ({ isMobile }) => {
           rightIcon={<FiChevronRight />}
           onClick={async () => {
             try {
+              scrollRef.current?.scrollTo({ top: 0, behavior: "smooth" });
               setIsFormSubmitting(true);
               const res = await PublicAPI.post(
                 "tasks/create_demo_classification_task/",
@@ -152,6 +153,7 @@ const DemoSidebar: React.FC<Props> = ({ isMobile }) => {
         top="50px"
         right="10px"
         size="40px"
+        pointerEvents="auto"
       >
         <Spinner
           thickness="2px"
@@ -173,8 +175,8 @@ const DemoSidebar: React.FC<Props> = ({ isMobile }) => {
       top="40px"
       height="calc(100vh - 40px)"
       transition="right 0.3s ease-in-out"
-      color="demoDark"
       pointerEvents="none"
+      color="demoDark"
     >
       <IconButton
         aria-label="Toggle sidebar visibility"
@@ -196,7 +198,7 @@ const DemoSidebar: React.FC<Props> = ({ isMobile }) => {
         ref={scrollRef}
         spacing={2}
         w="280px"
-        pointerEvents="auto"
+        pointerEvents="none"
         height="100%"
         overflowY="scroll"
         py="10px"

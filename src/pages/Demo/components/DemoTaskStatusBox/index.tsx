@@ -33,7 +33,14 @@ const DemoTaskStatusBox: React.FC<Props> = () => {
   }
 
   return (
-    <VStack align="flex-start" p="1em" w="100%" bg="offWhite" borderRadius="md">
+    <VStack
+      align="flex-start"
+      p="1em"
+      w="100%"
+      bg="offWhite"
+      borderRadius="md"
+      pointerEvents="auto"
+    >
       <Text fontWeight="bold">{taskStatusMessage}</Text>
       <Progress
         background="gray.200"

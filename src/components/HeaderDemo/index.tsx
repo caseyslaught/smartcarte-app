@@ -15,9 +15,10 @@ const HeaderDemo: React.FC<Props> = () => {
       h="40px"
       w="100%"
       px={["0.8em", "1em"]}
-      zIndex={9}
+      zIndex={9999}
       background="offWhite"
       position="relative"
+      shadow="md"
     >
       {/* 
  
@@ -48,7 +49,7 @@ const HeaderDemo: React.FC<Props> = () => {
       */}
 
       <Box h="60%">
-        <Link to="/demo" replace={true}>
+        <Link to="/demo" replace={false}>
           <Image h="100%" src={LogoDemoDark} alt="logo" />
         </Link>
       </Box>
