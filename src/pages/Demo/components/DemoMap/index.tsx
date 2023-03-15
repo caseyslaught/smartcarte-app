@@ -121,23 +121,26 @@ const DemoMap: React.FC<Props> = () => {
     formRegionPolygon,
   ]);
 
+  // clear drawings
   useEffect(() => {
     if (formClearRegionTime) draw.current.deleteAll();
   }, [formClearRegionTime]);
 
-  // if valid task and region polygon, draw it on map and fly to it
+  // draw task region polygon
   useEffect(() => {
-    if (taskStatus && taskRegionPolygon && !taskFirstFlyTo) {
-      console.log("here");
+    if (taskStatus && taskRegionPolygon) {
       draw.current.add(taskRegionPolygon);
       const regionArea = area(taskRegionPolygon);
-      setTaskRegionArea(Math.round(regionArea / 1_000_000)); // TODO: maybe need to share state with form?
+      setTaskRegionArea(Math.round(regionArea / 1_000_000));
+    }
+  }, [taskStatus, taskRegionPolygon, setTaskRegionArea]);
 
-      // fly to centroid
+  // fly to centroid of region only once
+  useEffect(() => {
+    if (taskStatus && taskRegionPolygon && !taskFirstFlyTo) {
       const regionCentroid = centroid(taskRegionPolygon);
       const coords = regionCentroid.geometry.coordinates;
       const center = new LngLat(coords[0], coords[1]);
-      /* this is causing an infinte loop */
       map.current.flyTo({
         center: center,
         zoom: 9,
