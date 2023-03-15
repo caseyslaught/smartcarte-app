@@ -17,7 +17,8 @@ const HeaderDemo: React.FC<Props> = () => {
       px={["0.8em", "1em"]}
       zIndex={9999}
       background="offWhite"
-      position="relative"
+      position="fixed"
+      top={0}
       shadow="md"
     >
       {/* 

@@ -84,7 +84,6 @@ const DemoSidebar: React.FC<Props> = ({ isMobile }) => {
           rightIcon={<FiChevronRight />}
           onClick={async () => {
             try {
-              scrollRef.current?.scrollTo({ top: 0, behavior: "smooth" });
               setIsFormSubmitting(true);
               const res = await PublicAPI.post(
                 "tasks/create_demo_classification_task/",
@@ -198,7 +197,7 @@ const DemoSidebar: React.FC<Props> = ({ isMobile }) => {
         ref={scrollRef}
         spacing={2}
         w="280px"
-        pointerEvents="none"
+        pointerEvents="auto"
         height="100%"
         overflowY="scroll"
         py="10px"

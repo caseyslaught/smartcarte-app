@@ -21,6 +21,7 @@ const LayoutDemo: React.FC<Props> = () => {
       h="100%"
       w="100%"
       overflowX="hidden"
+      overflowY="hidden"
     >
       <Modal isOpen={isModalOpen} onClose={() => {}}>
         <ModalOverlay />
