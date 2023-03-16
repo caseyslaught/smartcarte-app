@@ -1,11 +1,18 @@
 /* eslint import/no-webpack-loader-syntax: off */
-import React, { useRef, MutableRefObject, useEffect } from "react";
+import React, {
+  useRef,
+  MutableRefObject,
+  useCallback,
+  useEffect,
+  useState,
+} from "react";
 import mapboxgl, { LngLat, Map } from "mapbox-gl";
 import MapboxDraw from "@mapbox/mapbox-gl-draw";
-import { Box } from "@chakra-ui/react";
+import { Box, IconButton } from "@chakra-ui/react";
 import { polygon } from "@turf/helpers";
 import area from "@turf/area";
 import centroid from "@turf/centroid";
+import { FiEye, FiEyeOff } from "react-icons/fi";
 
 import useLocalStorage from "../../../../hooks/useLocalStorage";
 import useDemo from "../../hooks/useDemo";
@@ -23,7 +30,13 @@ mapboxgl.accessToken = MAPBOX_TOKEN || "";
 
 interface Props {}
 
+const IMAGERY_SOURCE = "imagery-source";
+const IMAGERY_LAYER = "imagery-layer";
+
 const DemoMap: React.FC<Props> = () => {
+  const [showTiles, setShowTiles] = useState(true);
+  const prevImageryTilesHref = useRef<string | null>(null);
+  const regionLayerId = useRef<string>("");
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<Map>(null) as MutableRefObject<Map>;
   const draw = useRef<MapboxDraw>(null) as MutableRefObject<MapboxDraw>;
@@ -42,8 +55,52 @@ const DemoMap: React.FC<Props> = () => {
     setTaskFirstFlyTo,
     taskRegionPolygon,
     setTaskRegionArea,
+    taskImageryTilesHref,
     taskStatus,
   } = useDemo();
+
+  const addMapTiles = useCallback((tilesHref: string) => {
+    map.current.addSource(IMAGERY_SOURCE, {
+      scheme: "tms",
+      type: "raster",
+      tiles: [tilesHref],
+      tileSize: 256,
+    });
+
+    map.current.addLayer(
+      {
+        id: IMAGERY_LAYER,
+        type: "raster",
+        source: IMAGERY_SOURCE,
+        paint: {
+          "raster-opacity": 1.0,
+        },
+      },
+      "waterway-label"
+    );
+  }, []);
+
+  const removeMapTiles = useCallback(() => {
+    if (map.current.getLayer(IMAGERY_LAYER))
+      map.current.removeLayer(IMAGERY_LAYER);
+
+    if (map.current.getSource(IMAGERY_SOURCE))
+      map.current.removeSource(IMAGERY_SOURCE);
+  }, []);
+
+  useEffect(() => {
+    if (map.current) {
+      if (
+        taskImageryTilesHref &&
+        prevImageryTilesHref.current !== taskImageryTilesHref
+      ) {
+        console.log("updating map tiles");
+        removeMapTiles();
+        if (taskImageryTilesHref) addMapTiles(taskImageryTilesHref);
+        prevImageryTilesHref.current = taskImageryTilesHref;
+      }
+    }
+  }, [taskImageryTilesHref, addMapTiles, removeMapTiles]);
 
   useEffect(() => {
     if (map.current || !mapContainer.current) return;
@@ -55,6 +112,7 @@ const DemoMap: React.FC<Props> = () => {
       projection: { name: "globe" },
       zoom: zoom,
       minZoom: 2.4,
+      maxZoom: 14,
     });
 
     map.current.on("load", () => {});
@@ -129,9 +187,13 @@ const DemoMap: React.FC<Props> = () => {
   // draw task region polygon
   useEffect(() => {
     if (taskStatus && taskRegionPolygon) {
-      draw.current.add(taskRegionPolygon);
-      const regionArea = area(taskRegionPolygon);
-      setTaskRegionArea(Math.round(regionArea / 1_000_000));
+      if (regionLayerId.current === "") {
+        const drawIds = draw.current.add(taskRegionPolygon);
+        console.log("drawId", drawIds[0]);
+        regionLayerId.current = drawIds[0];
+        const regionArea = area(taskRegionPolygon);
+        setTaskRegionArea(Math.round(regionArea / 1_000_000));
+      }
     } else {
       draw.current.deleteAll();
     }
@@ -158,7 +220,36 @@ const DemoMap: React.FC<Props> = () => {
     setTaskFirstFlyTo,
   ]);
 
-  return <Box ref={mapContainer} h="100%" w="100%"></Box>;
+  const toggleShowTiles = () => {
+    const newShowTiles = !showTiles;
+    if (newShowTiles && taskImageryTilesHref) {
+      addMapTiles(taskImageryTilesHref);
+    } else {
+      removeMapTiles();
+    }
+    setShowTiles(newShowTiles);
+  };
+
+  return (
+    <>
+      {taskImageryTilesHref && (
+        <IconButton
+          zIndex={9999}
+          position="absolute"
+          bottom="10px"
+          left="10px"
+          bg="offWhite"
+          color="demoDark"
+          fontSize="2em"
+          aria-label="Toggle map tiles"
+          icon={showTiles ? <FiEye /> : <FiEyeOff />}
+          size="lg"
+          onClick={toggleShowTiles}
+        />
+      )}
+      <Box ref={mapContainer} h="100%" w="100%" position="relative"></Box>
+    </>
+  );
 };
 
 export default DemoMap;

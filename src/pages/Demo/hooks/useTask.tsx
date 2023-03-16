@@ -63,6 +63,7 @@ const useTask = ({ taskUid, paramTaskUid }: Props) => {
           setTaskImageryTilesHref(task.imagery_tiles_href);
           setTaskClassificationHref(task.landcover_tif_href);
           setTaskClassificationTilesHref(task.landcover_tiles_href);
+          setTaskStatistics(task.statistics_json);
 
           const regionPolygon = polygon(
             task.region_geojson.geometry.coordinates
@@ -70,11 +71,6 @@ const useTask = ({ taskUid, paramTaskUid }: Props) => {
           const regionArea = Math.round(area(regionPolygon) / 1000000);
           setTaskRegionPolygon(regionPolygon);
           setTaskRegionArea(regionArea);
-
-          if (task.statistics_json !== "") {
-            const taskStatisticsObj = JSON.parse(task.statistics_json);
-            setTaskStatistics(taskStatisticsObj);
-          }
 
           setTaskFirstLoaded(true);
         }
