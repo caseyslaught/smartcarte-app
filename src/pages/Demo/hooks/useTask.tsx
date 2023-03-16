@@ -64,8 +64,9 @@ const useTask = ({ taskUid, paramTaskUid }: Props) => {
           setTaskClassificationHref(task.landcover_tif_href);
           setTaskClassificationTilesHref(task.landcover_tiles_href);
 
-          const regionGeojsonObj = JSON.parse(task.region_geojson);
-          const regionPolygon = polygon(regionGeojsonObj.geometry.coordinates);
+          const regionPolygon = polygon(
+            task.region_geojson.geometry.coordinates
+          );
           const regionArea = Math.round(area(regionPolygon) / 1000000);
           setTaskRegionPolygon(regionPolygon);
           setTaskRegionArea(regionArea);
