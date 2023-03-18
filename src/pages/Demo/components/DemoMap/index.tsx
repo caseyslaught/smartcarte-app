@@ -246,7 +246,7 @@ const DemoMap: React.FC<Props> = ({ isMobile, isSidebarExpanded }) => {
           left="10px"
           bg="offWhite"
           color="demoDark"
-          fontSize="1.9em"
+          fontSize="1.7em"
           aria-label="Toggle map tiles"
           icon={showTiles ? <FiEye /> : <FiEyeOff />}
           size="lg"

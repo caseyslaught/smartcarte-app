@@ -119,7 +119,8 @@ const DemoSidebar: React.FC<Props> = ({
             scrollRef.current.scrollTo(0, 0);
           setIsExpanded(!isExpanded);
         }}
-        fontSize="xl"
+        size="lg"
+        fontSize="1.7em"
         mt="10px"
         icon={isExpanded ? <FiChevronRight /> : <FiChevronLeft />}
       />
