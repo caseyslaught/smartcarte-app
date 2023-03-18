@@ -28,12 +28,15 @@ mapboxgl.workerClass =
 const MAPBOX_TOKEN = process.env.REACT_APP_MAPBOX_TOKEN;
 mapboxgl.accessToken = MAPBOX_TOKEN || "";
 
-interface Props {}
+interface Props {
+  isMobile: boolean;
+  isSidebarExpanded: boolean;
+}
 
 const IMAGERY_SOURCE = "imagery-source";
 const IMAGERY_LAYER = "imagery-layer";
 
-const DemoMap: React.FC<Props> = () => {
+const DemoMap: React.FC<Props> = ({ isMobile, isSidebarExpanded }) => {
   const [showTiles, setShowTiles] = useState(true);
   const prevImageryTilesHref = useRef<string | null>(null);
   const regionLayerId = useRef<string>("");
@@ -230,17 +233,20 @@ const DemoMap: React.FC<Props> = () => {
     setShowTiles(newShowTiles);
   };
 
+  const isEyeInvisible = isMobile && isSidebarExpanded;
+
   return (
     <>
       {taskImageryTilesHref && (
         <IconButton
-          zIndex={9999}
+          zIndex={8888}
+          display={isEyeInvisible ? "none" : "inherit"}
           position="absolute"
-          bottom="10px"
+          top="50px"
           left="10px"
           bg="offWhite"
           color="demoDark"
-          fontSize="2em"
+          fontSize="1.9em"
           aria-label="Toggle map tiles"
           icon={showTiles ? <FiEye /> : <FiEyeOff />}
           size="lg"

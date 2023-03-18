@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import { HStack, IconButton, VStack, Spinner, Square } from "@chakra-ui/react";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 
@@ -11,12 +11,17 @@ import DemoFormContent from "../DemoFormContent";
 
 interface Props {
   isMobile: boolean;
+  isExpanded: boolean;
+  setIsExpanded: (isExpanded: boolean) => void;
 }
 
-const DemoSidebar: React.FC<Props> = ({ isMobile }) => {
+const DemoSidebar: React.FC<Props> = ({
+  isMobile,
+  isExpanded,
+  setIsExpanded,
+}) => {
   const isMobileRef = useRef(isMobile);
   const scrollRef = useRef<HTMLDivElement | null>(null);
-  const [isExpanded, setIsExpanded] = useState(!isMobile);
   const {
     formRegionPolygon,
     taskUid,
@@ -37,7 +42,7 @@ const DemoSidebar: React.FC<Props> = ({ isMobile }) => {
     const isMobileChange = isMobileRef.current !== isMobile;
     if (isMobile && !isMobileChange && formRegionPolygon) setIsExpanded(true);
     isMobileRef.current = isMobile;
-  }, [formRegionPolygon, isMobile]);
+  }, [formRegionPolygon, isMobile, setIsExpanded]);
 
   /*** task ***/
 
@@ -92,6 +97,7 @@ const DemoSidebar: React.FC<Props> = ({ isMobile }) => {
 
   return (
     <HStack
+      zIndex={9999}
       spacing={2}
       align="flex-start"
       justify="flex-start"

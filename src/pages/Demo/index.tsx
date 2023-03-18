@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Flex, useMediaQuery } from "@chakra-ui/react";
 import { useParams } from "react-router-dom";
 
@@ -13,6 +13,7 @@ const DemoPage: React.FC<Props> = () => {
   const [isMobile] = useMediaQuery("(max-width: 767px)", { ssr: false });
   const { taskUid: paramTaskUid } = useParams();
   const { taskUid, setTaskUid } = useDemo();
+  const [isSidebarExpanded, setIsSidebarExpanded] = useState(!isMobile);
 
   useTask({ taskUid, paramTaskUid }); // sets up task state - this must be above the useEffect below
 
@@ -28,8 +29,12 @@ const DemoPage: React.FC<Props> = () => {
 
   return (
     <Flex h="100%" w="100%" position="relative">
-      <DemoMap />
-      <DemoSidebar isMobile={isMobile} />
+      <DemoMap isMobile={isMobile} isSidebarExpanded={isSidebarExpanded} />
+      <DemoSidebar
+        isMobile={isMobile}
+        isExpanded={isSidebarExpanded}
+        setIsExpanded={setIsSidebarExpanded}
+      />
     </Flex>
   );
 };
