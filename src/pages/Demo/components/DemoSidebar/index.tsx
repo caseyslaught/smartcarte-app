@@ -1,47 +1,24 @@
 import React, { useEffect, useRef, useState } from "react";
-import {
-  Box,
-  HStack,
-  IconButton,
-  VStack,
-  Button,
-  Spinner,
-  Square,
-} from "@chakra-ui/react";
+import { HStack, IconButton, VStack, Spinner, Square } from "@chakra-ui/react";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
-import { useNavigate } from "react-router-dom";
-
-import { PublicAPI } from "../../../../api";
 
 import useDemo from "../../hooks/useDemo";
-import DemoFormEmailBox from "../DemoFormEmailBox";
-import DemoFormParametersBox from "../DemoFormParametersBox";
 import DemoTaskStatusBox from "../DemoTaskStatusBox";
 import DemoTaskParametersBox from "../DemoTaskParametersBox";
 import DemoTaskLegendBox from "../DemoTaskLegendBox";
 import DemoTaskDownloadBox from "../DemoTaskDownloadBox";
-
-import { isEmailValid } from "../../../../utilities/text";
+import DemoFormContent from "../DemoFormContent";
 
 interface Props {
   isMobile: boolean;
 }
 
 const DemoSidebar: React.FC<Props> = ({ isMobile }) => {
-  const navigate = useNavigate();
   const isMobileRef = useRef(isMobile);
   const scrollRef = useRef<HTMLDivElement | null>(null);
   const [isExpanded, setIsExpanded] = useState(!isMobile);
-  const [isFormSubmitting, setIsFormSubmitting] = useState(false);
   const {
-    clearFormState,
-    formTid,
-    formEmail,
-    formWaitlistChecked,
     formRegionPolygon,
-    formRegionArea,
-    formMonth,
-    formYear,
     taskUid,
     taskStatus,
     taskRegionPolygon,
@@ -50,13 +27,9 @@ const DemoSidebar: React.FC<Props> = ({ isMobile }) => {
 
   /*** form ***/
 
-  let formRegionTooBig = true;
-  if (formRegionPolygon && formRegionArea) {
-    formRegionTooBig = formRegionArea > 5000;
-  }
-
-  const formStartTaskEnabled =
-    !formRegionTooBig && formEmail && isEmailValid(formEmail);
+  const handleDraw = () => {
+    if (isMobile) setIsExpanded(false);
+  };
 
   // open sidebar when region is drawn only on mobile
   useEffect(() => {
@@ -65,53 +38,6 @@ const DemoSidebar: React.FC<Props> = ({ isMobile }) => {
     if (isMobile && !isMobileChange && formRegionPolygon) setIsExpanded(true);
     isMobileRef.current = isMobile;
   }, [formRegionPolygon, isMobile]);
-
-  const handleDraw = () => {
-    if (isMobile) setIsExpanded(false);
-  };
-
-  const formContent = (
-    <>
-      <DemoFormParametersBox handleDraw={handleDraw} />
-      <DemoFormEmailBox />
-      <Box w="100%" borderRadius="md" pointerEvents="auto">
-        <Button
-          disabled={!formStartTaskEnabled || isFormSubmitting}
-          isLoading={isFormSubmitting}
-          colorScheme="blue"
-          variant="solid"
-          w="100%"
-          rightIcon={<FiChevronRight />}
-          onClick={async () => {
-            try {
-              setIsFormSubmitting(true);
-              const res = await PublicAPI.post(
-                "tasks/create_demo_classification_task/",
-                {
-                  date: formYear + "-" + (formMonth + 1) + "-28",
-                  region_geojson: JSON.stringify(formRegionPolygon),
-                  email: formEmail,
-                  add_to_waitlist: formWaitlistChecked,
-                  tid: formTid,
-                }
-              );
-
-              if (res.status === 201) {
-                clearFormState();
-                navigate("/demo/" + res.data.task_uid, { replace: true });
-              }
-            } catch (error) {
-              console.log(error);
-            } finally {
-              setIsFormSubmitting(false);
-            }
-          }}
-        >
-          Start task
-        </Button>
-      </Box>
-    </>
-  );
 
   /*** task ***/
 
@@ -202,7 +128,11 @@ const DemoSidebar: React.FC<Props> = ({ isMobile }) => {
         pointerEvents={isMobile ? "auto" : "none"}
         py="10px"
       >
-        {isTask ? taskContent : formContent}
+        {isTask ? (
+          taskContent
+        ) : (
+          <DemoFormContent isMobile={isMobile} handleDraw={handleDraw} />
+        )}
       </VStack>
     </HStack>
   );

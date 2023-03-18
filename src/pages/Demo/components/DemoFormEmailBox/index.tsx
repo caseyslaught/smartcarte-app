@@ -12,7 +12,7 @@ import useDemo from "../../hooks/useDemo";
 
 interface Props {}
 
-const DemoEmailBox: React.FC<Props> = () => {
+const DemoFormEmailBox: React.FC<Props> = () => {
   const {
     formEmail,
     setFormEmail,
@@ -53,4 +53,4 @@ const DemoEmailBox: React.FC<Props> = () => {
   );
 };
 
-export default DemoEmailBox;
+export default DemoFormEmailBox;
