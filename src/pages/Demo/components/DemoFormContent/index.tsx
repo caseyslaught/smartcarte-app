@@ -70,11 +70,20 @@ const DemoFormContent: React.FC<Props> = ({ isMobile, handleDraw }) => {
         });
       } else if (error.code === "ERR_BAD_REQUEST") {
         const errorCode = error?.response?.data?.error;
-        if (errorCode && errorCode === "task_limit") {
+        if (errorCode === "task_limit") {
           toast({
             title: "Too many running tasks",
             description:
               "You can only have one running task at a time. Please wait for your current task to finish before starting a new one.",
+            status: "warning",
+            duration: 12000,
+            isClosable: true,
+          });
+        } else if (errorCode === "fargate_error") {
+          toast({
+            title: "Server capacity reached",
+            description:
+              "We have reached our server capacity. Please try again later.",
             status: "warning",
             duration: 12000,
             isClosable: true,
