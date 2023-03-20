@@ -187,9 +187,9 @@ const DemoMap: React.FC<Props> = ({ isMobile, isSidebarExpanded }) => {
     if (formClearRegionTime) draw.current.deleteAll();
   }, [formClearRegionTime]);
 
-  // draw task region polygon
+  // draw task region polygon or remove polygon and tiles
   useEffect(() => {
-    if (taskStatus && taskRegionPolygon) {
+    if (taskRegionPolygon) {
       if (regionLayerId.current === "") {
         const drawIds = draw.current.add(taskRegionPolygon);
         console.log("drawId", drawIds[0]);
@@ -198,9 +198,10 @@ const DemoMap: React.FC<Props> = ({ isMobile, isSidebarExpanded }) => {
         setTaskRegionArea(Math.round(regionArea / 1_000_000));
       }
     } else {
+      removeMapTiles();
       draw.current.deleteAll();
     }
-  }, [taskStatus, taskRegionPolygon, setTaskRegionArea]);
+  }, [taskRegionPolygon, setTaskRegionArea, removeMapTiles]);
 
   // fly to centroid of region only once
   useEffect(() => {
@@ -224,13 +225,10 @@ const DemoMap: React.FC<Props> = ({ isMobile, isSidebarExpanded }) => {
   ]);
 
   const toggleShowTiles = () => {
-    const newShowTiles = !showTiles;
-    if (newShowTiles && taskImageryTilesHref) {
-      addMapTiles(taskImageryTilesHref);
-    } else {
-      removeMapTiles();
-    }
-    setShowTiles(newShowTiles);
+    const tilesVisibility =
+      !showTiles && taskImageryTilesHref ? "visible" : "none";
+    map.current.setLayoutProperty(IMAGERY_LAYER, "visibility", tilesVisibility);
+    setShowTiles(!showTiles);
   };
 
   const isEyeInvisible = isMobile && isSidebarExpanded;
