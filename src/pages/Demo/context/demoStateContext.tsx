@@ -96,6 +96,9 @@ export interface DemoStateType {
     classificationTilesHref: string | null
   ) => void;
 
+  taskRgbHref: string | null;
+  setTaskRgbHref: (rgbHref: string | null) => void;
+
   clearFormState: () => void;
   clearTaskState: () => void;
 }
@@ -161,6 +164,7 @@ export const DemoStateProvider: React.FC<Props> = ({ children }) => {
   >(null);
   const [taskClassificationTilesHref, setTaskClassificationTilesHref] =
     useState<string | null>(null);
+  const [taskRgbHref, setTaskRgbHref] = useState<string | null>(null);
 
   // save a new tid to local storage
   useEffect(() => {
@@ -199,6 +203,7 @@ export const DemoStateProvider: React.FC<Props> = ({ children }) => {
     setTaskImageryTilesHref(null);
     setTaskClassificationHref(null);
     setTaskClassificationTilesHref(null);
+    setTaskRgbHref(null);
   }, []);
 
   const value = {
@@ -258,6 +263,8 @@ export const DemoStateProvider: React.FC<Props> = ({ children }) => {
     setTaskClassificationHref,
     taskClassificationTilesHref,
     setTaskClassificationTilesHref,
+    taskRgbHref,
+    setTaskRgbHref,
   };
 
   return (

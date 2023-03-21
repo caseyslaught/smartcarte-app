@@ -31,6 +31,7 @@ const useTask = ({ taskUid, paramTaskUid }: Props) => {
     setTaskImageryTilesHref,
     setTaskClassificationHref,
     setTaskClassificationTilesHref,
+    setTaskRgbHref,
   } = useDemo();
 
   /*
@@ -63,6 +64,7 @@ const useTask = ({ taskUid, paramTaskUid }: Props) => {
           setTaskImageryTilesHref(task.imagery_tiles_href);
           setTaskClassificationHref(task.landcover_tif_href);
           setTaskClassificationTilesHref(task.landcover_tiles_href);
+          setTaskRgbHref(task.rgb_tif_href);
           setTaskStatistics(task.statistics_json);
 
           const regionPolygon = polygon(
@@ -125,6 +127,7 @@ const useTask = ({ taskUid, paramTaskUid }: Props) => {
     setTaskImageryTilesHref,
     setTaskClassificationHref,
     setTaskClassificationTilesHref,
+    setTaskRgbHref,
     navigate,
   ]);
 

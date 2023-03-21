@@ -7,10 +7,10 @@ import useDemo from "../../hooks/useDemo";
 interface Props {}
 
 const DemoTaskDownloadBox: React.FC<Props> = () => {
-  const { taskImageryHref, taskClassificationHref } = useDemo();
+  const { taskImageryHref, taskClassificationHref, taskRgbHref } = useDemo();
 
-  // if both are null then don't show box
-  if (!taskImageryHref && !taskClassificationHref) return null;
+  // if all are null then don't show box
+  if (!taskImageryHref && !taskClassificationHref && !taskRgbHref) return null;
 
   return (
     <VStack
@@ -33,6 +33,22 @@ const DemoTaskDownloadBox: React.FC<Props> = () => {
             }}
           >
             Download imagery
+          </Button>
+        </Link>
+      )}
+      {taskRgbHref && (
+        <Link href={taskRgbHref} download w="100%">
+          <Button
+            colorScheme="blue"
+            variant="outline"
+            w="100%"
+            leftIcon={<FiDownload />}
+            _hover={{
+              bg: "blue.500",
+              color: "white",
+            }}
+          >
+            Download RGB
           </Button>
         </Link>
       )}
