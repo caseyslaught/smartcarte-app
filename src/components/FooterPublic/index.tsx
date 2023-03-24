@@ -53,8 +53,12 @@ const FooterPublic: React.FC<Props> = () => {
             INFORMATION
           </Text>
           <Link>About Us</Link>
-          <Link>Methodology</Link>
-          <Link>White Paper</Link>
+          <Link
+            isExternal
+            href="https://caseyslaught.notion.site/Smart-Carte-A-Web-Based-Landscape-Intelligence-Platform-2999fdc1b4014455b68b658ce5b1be0f"
+          >
+            White Paper
+          </Link>
         </VStack>
         <VStack></VStack>
       </Stack>

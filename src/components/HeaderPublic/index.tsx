@@ -1,6 +1,7 @@
 import React from "react";
 import { Box, Button, Flex, HStack, Image } from "@chakra-ui/react";
 import { Link } from "react-router-dom"; // useLocation
+import { FiArrowRight } from "react-icons/fi";
 
 import LogoLight from "../../assets/images/logo_light.png";
 
@@ -11,7 +12,12 @@ const HeaderPublic: React.FC<Props> = () => {
 
   const accountBtn = (
     <Link to="/demo">
-      <Button colorScheme="whiteAlpha" size="md" variant="outline">
+      <Button
+        colorScheme="telegram"
+        size="md"
+        variant="solid"
+        rightIcon={<FiArrowRight />}
+      >
         Try demo
       </Button>
     </Link>
@@ -51,7 +57,7 @@ const HeaderPublic: React.FC<Props> = () => {
         w="100%"
       >
         <Link to="/">
-          <Box w={["160px", "180px", "180px", "200px", "240px"]}>
+          <Box w={["180px", "180px", "180px", "200px", "240px"]}>
             <Image src={LogoLight} alt="logo" />
           </Box>
         </Link>
