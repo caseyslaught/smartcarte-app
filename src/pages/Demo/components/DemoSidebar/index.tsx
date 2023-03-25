@@ -5,7 +5,7 @@ import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import useDemo from "../../hooks/useDemo";
 import DemoTaskStatusBox from "../DemoTaskStatusBox";
 import DemoTaskParametersBox from "../DemoTaskParametersBox";
-import DemoTaskLegendBox from "../DemoTaskLegendBox";
+// import DemoTaskLegendBox from "../DemoTaskLegendBox";
 import DemoTaskDownloadBox from "../DemoTaskDownloadBox";
 import DemoFormContent from "../DemoFormContent";
 
@@ -59,7 +59,7 @@ const DemoSidebar: React.FC<Props> = ({
       <>
         <DemoTaskStatusBox />
         <DemoTaskParametersBox />
-        <DemoTaskLegendBox />
+        {/* <DemoTaskLegendBox /> */}
         {!isMobile && <DemoTaskDownloadBox />}
       </>
     );

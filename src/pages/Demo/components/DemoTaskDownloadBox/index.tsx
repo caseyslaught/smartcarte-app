@@ -32,7 +32,7 @@ const DemoTaskDownloadBox: React.FC<Props> = () => {
               color: "white",
             }}
           >
-            Download imagery
+            Download multi-spectral
           </Button>
         </Link>
       )}
