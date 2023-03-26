@@ -97,7 +97,7 @@ const DemoSidebar: React.FC<Props> = ({
 
   return (
     <HStack
-      zIndex={9999}
+      zIndex={998}
       spacing={2}
       align="flex-start"
       justify="flex-start"

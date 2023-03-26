@@ -1,13 +1,22 @@
 import React from "react";
-import { Box, Flex, Image } from "@chakra-ui/react"; // IconButton, HStack
-// import { FiInfo, FiChevronLeft } from "react-icons/fi";
+import {
+  Box,
+  Flex,
+  Image,
+  IconButton,
+  HStack,
+  Tooltip,
+} from "@chakra-ui/react";
+import { FiInfo, FiHome } from "react-icons/fi";
 import { Link } from "react-router-dom";
 
 import LogoDemoDark from "../../assets/images/logo_demo_dark.png";
 
-interface Props {}
+interface Props {
+  setIsInfoModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}
 
-const HeaderDemo: React.FC<Props> = () => {
+const HeaderDemo: React.FC<Props> = ({ setIsInfoModalOpen }) => {
   return (
     <Flex
       align="center"
@@ -15,45 +24,52 @@ const HeaderDemo: React.FC<Props> = () => {
       h="40px"
       w="100%"
       px={["0.8em", "1em"]}
-      zIndex={9999}
+      zIndex={999}
       background="offWhite"
       position="fixed"
       top={0}
       shadow="md"
     >
-      {/* 
- 
-      <HStack position="absolute" left={0} ms={[0, 0, 4]}>
-        <Link to="/" replace={true}>
-          <IconButton
-            icon={<FiChevronLeft />}
-            aria-label="info"
-            size="sm"
-            color="demoDark"
-            colorScheme="gray"
-            variant="ghost"
-            fontSize="1.2em"
-            _hover={{ background: "gray.200" }}
-          />
-        </Link>
+      <HStack position="absolute" left={0} ms={[1, 1, 4]} spacing={2}>
+        <Tooltip label="Return home" placement="bottom-end" hasArrow>
+          <Link to="/" replace={true}>
+            <IconButton
+              icon={<FiHome />}
+              aria-label="info"
+              size="sm"
+              color="demoDark"
+              isRound={true}
+              colorScheme="telegram"
+              variant="ghost"
+              fontSize="1.1em"
+              _hover={{ background: "gray.200" }}
+            />
+          </Link>
+        </Tooltip>
+      </HStack>
+
+      <Tooltip label="Reset map" placement="bottom" hasArrow>
+        <Box h="60%">
+          <Link to="/demo" replace={false}>
+            <Image h="100%" src={LogoDemoDark} alt="logo" />
+          </Link>
+        </Box>
+      </Tooltip>
+
+      <HStack position="absolute" right={0} me={[1, 1, 4]} spacing={2}>
         <IconButton
           icon={<FiInfo />}
           aria-label="info"
           size="sm"
           color="demoDark"
+          isRound={true}
           colorScheme="gray"
           variant="ghost"
           fontSize="1.2em"
           _hover={{ background: "gray.200" }}
+          onClick={() => setIsInfoModalOpen(true)}
         />
       </HStack>
-      */}
-
-      <Box h="60%">
-        <Link to="/demo" replace={false}>
-          <Image h="100%" src={LogoDemoDark} alt="logo" />
-        </Link>
-      </Box>
     </Flex>
   );
 };

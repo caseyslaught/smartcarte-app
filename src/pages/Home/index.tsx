@@ -37,7 +37,7 @@ const HomePage: React.FC<Props> = () => {
           justify={["center", "center", "space-between"]}
           maxWidth={["100%", "100%", "600px"]}
           spacing="24px"
-          zIndex="9"
+          zIndex={9}
         >
           <Heading
             size="4xl"

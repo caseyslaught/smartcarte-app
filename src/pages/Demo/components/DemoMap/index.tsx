@@ -45,7 +45,7 @@ const DemoMap: React.FC<Props> = ({ isMobile, isSidebarExpanded }) => {
   const draw = useRef<MapboxDraw>(null) as MutableRefObject<MapboxDraw>;
   const [lat, setLat] = useLocalStorage("lat", -0.72);
   const [lng, setLng] = useLocalStorage("lng", 29.38);
-  const [zoom, setZoom] = useLocalStorage("zoom", 12);
+  const [zoom, setZoom] = useLocalStorage("zoom", 4);
 
   const {
     formDrawEnabled,
@@ -237,7 +237,7 @@ const DemoMap: React.FC<Props> = ({ isMobile, isSidebarExpanded }) => {
     <>
       {taskImageryTilesHref && (
         <IconButton
-          zIndex={8888}
+          zIndex={888}
           display={isEyeInvisible ? "none" : "inherit"}
           position="absolute"
           top="50px"
