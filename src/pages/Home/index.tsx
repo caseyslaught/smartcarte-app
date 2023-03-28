@@ -1,7 +1,8 @@
 import React from "react";
-import { Box, Button, Flex, Heading, Text, VStack } from "@chakra-ui/react";
+import { Button, Flex, Heading, Text, VStack } from "@chakra-ui/react";
 
 import Globe from "./components/Globe";
+import FeaturesSection from "./components/FeaturesSection";
 import WaitlistModalForm from "./components/WaitlistModalForm";
 
 interface Props {}
@@ -76,14 +77,7 @@ const HomePage: React.FC<Props> = () => {
         </Flex>
       </Flex>
 
-      <Flex
-        align="center"
-        justify="center"
-        w="100%"
-        background="backgroundLight"
-      >
-        <Box></Box>
-      </Flex>
+      <FeaturesSection />
     </VStack>
   );
 };

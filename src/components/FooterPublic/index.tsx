@@ -22,7 +22,7 @@ interface Props {}
 
 const FooterPublic: React.FC<Props> = () => {
   return (
-    <VStack py="1em" spacing={["10px", "40px"]} w="100%">
+    <VStack pb={4} pt={16} spacing={["10px", "40px"]} w="100%" bg="#4f4f52">
       <Stack
         align={["center", "flex-start"]}
         direction={["column", "row"]}
@@ -42,7 +42,7 @@ const FooterPublic: React.FC<Props> = () => {
         </VStack>
         <VStack align="flex-start">
           <Text color="gray.300" fontSize="xs">
-            PRODUCTS
+            APPLICATIONS
           </Text>
           <Link>Burn Area Management</Link>
           <Link>Deforestation Monitoring</Link>
