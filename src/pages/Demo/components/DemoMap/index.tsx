@@ -70,13 +70,6 @@ const DemoMap: React.FC<Props> = ({ isMobile, isSidebarExpanded }) => {
       tileSize: 256,
     });
 
-    var style = map.current.getStyle();
-
-    // Loop through all layers in the style object and print their names
-    style.layers.forEach(function (layer) {
-      console.log(layer.id);
-    });
-
     map.current.addLayer(
       {
         id: IMAGERY_LAYER,
@@ -123,6 +116,8 @@ const DemoMap: React.FC<Props> = ({ isMobile, isSidebarExpanded }) => {
       zoom: zoom,
       minZoom: 2.4,
       maxZoom: 14,
+      dragRotate: false,
+      pitchWithRotate: false,
     });
 
     map.current.on("load", () => {});
@@ -133,6 +128,9 @@ const DemoMap: React.FC<Props> = ({ isMobile, isSidebarExpanded }) => {
       setLat(center.lat);
       setLng(center.lng);
     });
+
+    map.current.dragRotate.disable();
+    map.current.touchPitch.disable();
 
     const modes: any = MapboxDraw.modes;
     modes.draw_rectangle = DrawRectangle;
