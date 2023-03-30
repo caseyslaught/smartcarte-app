@@ -70,6 +70,13 @@ const DemoMap: React.FC<Props> = ({ isMobile, isSidebarExpanded }) => {
       tileSize: 256,
     });
 
+    var style = map.current.getStyle();
+
+    // Loop through all layers in the style object and print their names
+    style.layers.forEach(function (layer) {
+      console.log(layer.id);
+    });
+
     map.current.addLayer(
       {
         id: IMAGERY_LAYER,
@@ -79,7 +86,7 @@ const DemoMap: React.FC<Props> = ({ isMobile, isSidebarExpanded }) => {
           "raster-opacity": 1.0,
         },
       },
-      "waterway-label"
+      "tunnel-minor-case"
     );
   }, []);
 

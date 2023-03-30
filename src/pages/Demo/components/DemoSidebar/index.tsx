@@ -1,6 +1,14 @@
 import React, { useEffect, useRef } from "react";
-import { HStack, IconButton, VStack, Spinner, Square } from "@chakra-ui/react";
+import {
+  Button,
+  HStack,
+  IconButton,
+  VStack,
+  Spinner,
+  Square,
+} from "@chakra-ui/react";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
+import { useNavigate } from "react-router-dom";
 
 import useDemo from "../../hooks/useDemo";
 import DemoTaskStatusBox from "../DemoTaskStatusBox";
@@ -20,9 +28,11 @@ const DemoSidebar: React.FC<Props> = ({
   isExpanded,
   setIsExpanded,
 }) => {
+  const navigate = useNavigate();
   const isMobileRef = useRef(isMobile);
   const scrollRef = useRef<HTMLDivElement | null>(null);
   const {
+    clearTaskState,
     formRegionPolygon,
     taskUid,
     taskStatus,
@@ -61,6 +71,18 @@ const DemoSidebar: React.FC<Props> = ({
         <DemoTaskParametersBox />
         {/* <DemoTaskLegendBox /> */}
         {!isMobile && <DemoTaskDownloadBox />}
+
+        <Button
+          w="100%"
+          colorScheme="blue"
+          pointerEvents="auto"
+          onClick={() => {
+            clearTaskState();
+            navigate("/demo", { replace: true });
+          }}
+        >
+          New task
+        </Button>
       </>
     );
   } else if (taskStatus === "failed") {
@@ -106,7 +128,7 @@ const DemoSidebar: React.FC<Props> = ({
       top="40px"
       height="calc(100vh - 40px)"
       transition="right 0.3s ease-in-out"
-      pointerEvents={isMobile ? "auto" : "none"}
+      pointerEvents="none"
       color="demoDark"
     >
       <IconButton

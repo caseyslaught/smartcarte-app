@@ -62,10 +62,11 @@ const LayoutDemo: React.FC<Props> = () => {
           <ModalBody>
             <VStack w="100%" spacing={4}>
               <Text>
-                Welcome to our demo that enables you to seamlessly explore,
-                download, and examine satellite imagery and land cover data from
-                any location across the globe. Dive straight into your analysis
-                with accurate, high-quality imagery at your fingertips.
+                This demo allows you to explore, examine, and download satellite
+                imagery from any location in the world. Behind the scenes,
+                imagery is cloud masked, normalized, and mosaicked so you can
+                dive right into your core analysis. Landcover classification and
+                change detection features are coming soon!
               </Text>
 
               <Table variant="simple" size="sm">
