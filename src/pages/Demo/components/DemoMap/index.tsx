@@ -131,6 +131,7 @@ const DemoMap: React.FC<Props> = ({ isMobile, isSidebarExpanded }) => {
 
     map.current.dragRotate.disable();
     map.current.touchPitch.disable();
+    map.current.touchZoomRotate.disableRotation();
 
     const modes: any = MapboxDraw.modes;
     modes.draw_rectangle = DrawRectangle;
