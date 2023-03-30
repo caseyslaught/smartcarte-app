@@ -57,18 +57,20 @@ const HeaderDemo: React.FC<Props> = ({ setIsInfoModalOpen }) => {
       </Tooltip>
 
       <HStack position="absolute" right={0} me={[1, 1, 4]} spacing={2}>
-        <IconButton
-          icon={<FiInfo />}
-          aria-label="info"
-          size="sm"
-          color="demoDark"
-          isRound={true}
-          colorScheme="gray"
-          variant="ghost"
-          fontSize="1.2em"
-          _hover={{ background: "gray.200" }}
-          onClick={() => setIsInfoModalOpen(true)}
-        />
+        <Tooltip label="Show info" placement="bottom-end" hasArrow>
+          <IconButton
+            icon={<FiInfo />}
+            aria-label="info"
+            size="sm"
+            color="demoDark"
+            isRound={true}
+            colorScheme="gray"
+            variant="ghost"
+            fontSize="1.2em"
+            _hover={{ background: "gray.200" }}
+            onClick={() => setIsInfoModalOpen(true)}
+          />
+        </Tooltip>
       </HStack>
     </Flex>
   );

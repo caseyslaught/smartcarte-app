@@ -8,17 +8,17 @@ import ProcessingIcon from "../../../../assets/images/feature_preprocessing.png"
 const text = [
   {
     title: "Comprehensive Preprocessing",
-    text: "Receive high quality, cloud-free satellite imagery for your region of interest. We provide cloud masking, normalization, and mosaicking of 10-meter resolution imagery.",
+    text: "Receive high quality, cloud-free satellite imagery for your region of interest. We handle cloud masking, normalization, and mosaicking of 10-meter resolution imagery.",
     icon: ProcessingIcon,
   },
   {
     title: "Timely Change Detection",
-    text: "Detect changes to your region of interest in near real-time, allowing you to quickly respond to threats like deforestation and illegal mining.",
+    text: "Models detect changes to your region of interest in near real-time, allowing you to quickly respond to threats like deforestation and illegal mining.",
     icon: ChangeIcon,
   },
   {
     title: "Seamless Mobile Integration",
-    text: "Take important insights into the field with you with mobile-centric mapping tools so you can easily navigate to problem areas identified by our change detection models.",
+    text: "Take important insights into the field with you with the geolocated mobile version so you can easily navigate to problem areas identified by change detection models.",
     icon: MobileIcon,
   },
 ];
@@ -41,7 +41,7 @@ const FeaturesSection: React.FC<SectionProps> = () => {
         align={["center", "center", "flex-start"]}
         justify="center"
         direction={["column", "column", "row"]}
-        maxW={["7xl", "7xl", "7xl", "7xl", "7xl", "8xl"]}
+        maxW="5xl"
         width="100%"
       >
         {text.map((item, index) => (
@@ -73,7 +73,7 @@ const FeatureCard: React.FC<CardProps> = ({ title, text, icon }) => {
       align="flex-start"
     >
       <Image src={icon} w={["40%", "40%", "30%"]} />
-      <Heading size="lg" maxW="320px">
+      <Heading size="md" maxW="320px">
         {title}
       </Heading>
       <Text>{text}</Text>
