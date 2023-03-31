@@ -48,13 +48,9 @@ const HeaderDemo: React.FC<Props> = ({ setIsInfoModalOpen }) => {
         </Tooltip>
       </HStack>
 
-      <Tooltip label="Reset map" placement="bottom" hasArrow>
-        <Box h="60%">
-          <Link to="/demo" replace={false}>
-            <Image h="100%" src={LogoDemoDark} alt="logo" />
-          </Link>
-        </Box>
-      </Tooltip>
+      <Box h="60%">
+        <Image h="100%" src={LogoDemoDark} alt="logo" />
+      </Box>
 
       <HStack position="absolute" right={0} me={[1, 1, 4]} spacing={2}>
         <Tooltip label="Show info" placement="bottom-end" hasArrow>

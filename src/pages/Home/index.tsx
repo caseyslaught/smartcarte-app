@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Button, Flex, Heading, Text, VStack } from "@chakra-ui/react";
 
 import Globe from "./components/Globe";
@@ -9,6 +9,10 @@ interface Props {}
 
 const HomePage: React.FC<Props> = () => {
   const [isWaitlistOpen, setIsWaitlistOpen] = React.useState(false);
+
+  useEffect(() => {
+    document.title = "Smart Carte | Landscape Intelligence Platform";
+  }, []);
 
   return (
     <VStack spacing={0}>

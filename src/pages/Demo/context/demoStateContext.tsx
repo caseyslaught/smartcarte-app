@@ -121,7 +121,10 @@ export const DemoStateProvider: React.FC<Props> = ({ children }) => {
   const [formYear, setFormYear] = useState<number>(DEFAULT_FORM_YEAR);
   const [formMonth, setFormMonth] = useState<number>(DEFAULT_FORM_MONTH);
   const [formEmail, setFormEmail] = useState<string>("");
-  const [formWaitlistChecked, setFormWaitlistChecked] = useState<boolean>(true);
+  const [formWaitlistChecked, setFormWaitlistChecked] = useLocalStorage(
+    "waitlistChecked",
+    true
+  );
   const [formRegionPolygon, setFormRegionPolygon] = useState<Feature<
     Polygon,
     Properties
@@ -176,7 +179,6 @@ export const DemoStateProvider: React.FC<Props> = ({ children }) => {
     setFormYear(DEFAULT_FORM_YEAR);
     setFormMonth(DEFAULT_FORM_MONTH);
     setFormEmail("");
-    setFormWaitlistChecked(true);
     setFormRegionPolygon(null);
     setFormRegionArea(null);
     setFormClearRegionTime(null);
