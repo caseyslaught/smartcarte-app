@@ -53,6 +53,19 @@ const theme = {
         "scrollbar-width": "none",
         "-ms-overflow-style": "none",
       },
+      ".mapboxgl-ctrl-geocoder": {
+        zIndex: "9999 !important",
+        width: ["90%", "400px"],
+        background: "offWhite !important",
+        marginTop: "0px !important",
+        marginStart: "10px !important",
+      },
+      ".mapboxgl-ctrl-geocoder--button": {
+        background: "offWhite !important",
+      },
+      ".mapboxgl-ctrl-geocoder svg": {
+        fill: "demoDark !important",
+      },
     }),
   },
 };

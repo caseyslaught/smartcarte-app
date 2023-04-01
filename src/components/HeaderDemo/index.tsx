@@ -23,14 +23,18 @@ const HeaderDemo: React.FC<Props> = ({ setIsInfoModalOpen }) => {
       justify="center"
       h="40px"
       w="100%"
-      px={["0.8em", "1em"]}
       zIndex={999}
       background="offWhite"
       position="fixed"
       top={0}
       shadow="md"
     >
-      <HStack position="absolute" left={0} ms={[1, 1, 4]} spacing={2}>
+      <HStack
+        position="absolute"
+        left={0}
+        ms={["18px", "18px", "12px"]}
+        spacing={2}
+      >
         <Tooltip label="Return home" placement="bottom-end" hasArrow>
           <Link to="/" replace={true}>
             <IconButton
@@ -52,7 +56,12 @@ const HeaderDemo: React.FC<Props> = ({ setIsInfoModalOpen }) => {
         <Image h="100%" src={LogoDemoDark} alt="logo" />
       </Box>
 
-      <HStack position="absolute" right={0} me={[1, 1, 4]} spacing={2}>
+      <HStack
+        position="absolute"
+        right={0}
+        me={["16px", "16px", "10px"]}
+        spacing={2}
+      >
         <Tooltip label="Show info" placement="bottom-end" hasArrow>
           <IconButton
             icon={<FiInfo />}

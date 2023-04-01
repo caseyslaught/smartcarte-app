@@ -113,7 +113,7 @@ const LayoutDemo: React.FC<Props> = () => {
         </ModalContent>
       </Modal>
       <HeaderDemo setIsInfoModalOpen={setIsInfoModalOpen} />
-      <Flex id="demo-content-wrapper" flex={1} w="100%" mt="0em">
+      <Flex id="demo-content-wrapper" flex={1} w="100%" mt="40px">
         <Outlet context={{ isInfoModalOpen, setIsInfoModalOpen }} />
       </Flex>
     </Flex>

@@ -100,11 +100,11 @@ const DemoSidebar: React.FC<Props> = ({
     return (
       <Square
         bg="offWhite"
-        borderRadius="md"
+        borderRadius="4px"
         position="fixed"
         top="50px"
         right="10px"
-        size="40px"
+        size="36px"
         pointerEvents="auto"
       >
         <Spinner
@@ -141,8 +141,11 @@ const DemoSidebar: React.FC<Props> = ({
             scrollRef.current.scrollTo(0, 0);
           setIsExpanded(!isExpanded);
         }}
-        size="lg"
-        fontSize="1.7em"
+        borderRadius="4px"
+        fontSize="1.4em"
+        width={["50px", "50px", "36px"]}
+        height={["50px", "50px", "36px"]}
+        minWidth="36px"
         mt="10px"
         icon={isExpanded ? <FiChevronRight /> : <FiChevronLeft />}
       />

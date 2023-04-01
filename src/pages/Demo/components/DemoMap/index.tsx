@@ -6,8 +6,9 @@ import React, {
   useEffect,
   useState,
 } from "react";
-import mapboxgl, { LngLat, Map } from "mapbox-gl";
+import mapboxgl, { Control, LngLat, Map } from "mapbox-gl";
 import MapboxDraw from "@mapbox/mapbox-gl-draw";
+import MapboxGeocoder from "@mapbox/mapbox-gl-geocoder";
 import { Box, IconButton } from "@chakra-ui/react";
 import { polygon } from "@turf/helpers";
 import area from "@turf/area";
@@ -20,6 +21,9 @@ import drawStyles from "./drawStyles";
 
 const StaticMode = require("@mapbox/mapbox-gl-draw-static-mode");
 const DrawRectangle = require("mapbox-gl-draw-rectangle-restrict-area").default;
+
+// constants
+const MAX_ZOOM = 14;
 
 // @ts-ignore
 mapboxgl.workerClass =
@@ -43,6 +47,7 @@ const DemoMap: React.FC<Props> = ({ isMobile, isSidebarExpanded }) => {
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<Map>(null) as MutableRefObject<Map>;
   const draw = useRef<MapboxDraw>(null) as MutableRefObject<MapboxDraw>;
+  const geocoder = useRef<Control>(null) as MutableRefObject<Control>;
   const [lat, setLat] = useLocalStorage("lat", -0.72);
   const [lng, setLng] = useLocalStorage("lng", 29.38);
   const [zoom, setZoom] = useLocalStorage("zoom", 4);
@@ -105,6 +110,7 @@ const DemoMap: React.FC<Props> = ({ isMobile, isSidebarExpanded }) => {
     }
   }, [taskImageryTilesHref, addMapTiles, removeMapTiles]);
 
+  /*** set up map ***/
   useEffect(() => {
     if (map.current || !mapContainer.current) return;
     map.current = new mapboxgl.Map({
@@ -115,7 +121,7 @@ const DemoMap: React.FC<Props> = ({ isMobile, isSidebarExpanded }) => {
       projection: { name: "globe" },
       zoom: zoom,
       minZoom: 2.4,
-      maxZoom: 14,
+      maxZoom: MAX_ZOOM,
       dragRotate: false,
       pitchWithRotate: false,
     });
@@ -159,6 +165,33 @@ const DemoMap: React.FC<Props> = ({ isMobile, isSidebarExpanded }) => {
     }
   });
 
+  /*** add and remove geocoder ***/
+  useEffect(() => {
+    if (!map.current) return;
+
+    if (!geocoder.current) {
+      geocoder.current = new MapboxGeocoder({
+        accessToken: mapboxgl.accessToken,
+        marker: false,
+        zoom: MAX_ZOOM,
+        collapsed: true,
+      }) as unknown as Control;
+    }
+
+    const showGeocoder =
+      taskStatus === "loading" && !(isMobile && isSidebarExpanded);
+
+    if (showGeocoder) {
+      if (!map.current.hasControl(geocoder.current)) {
+        map.current.addControl(geocoder.current, "top-left");
+      }
+    } else {
+      if (map.current.hasControl(geocoder.current))
+        map.current.removeControl(geocoder.current);
+    }
+  }, [taskStatus, isMobile, isSidebarExpanded]);
+
+  /*** set up drawing ***/
   useEffect(() => {
     if (formDrawEnabled) {
       draw.current.changeMode("draw_rectangle", {
@@ -188,12 +221,12 @@ const DemoMap: React.FC<Props> = ({ isMobile, isSidebarExpanded }) => {
     formRegionPolygon,
   ]);
 
-  // clear drawings
+  /*** clear drawing ***/
   useEffect(() => {
     if (formClearRegionTime) draw.current.deleteAll();
   }, [formClearRegionTime]);
 
-  // draw task region polygon or remove polygon and tiles
+  /*** draw region or remove drawing and tiles ***/
   useEffect(() => {
     if (taskRegionPolygon) {
       if (regionLayerId.current === "") {
@@ -209,7 +242,7 @@ const DemoMap: React.FC<Props> = ({ isMobile, isSidebarExpanded }) => {
     }
   }, [taskRegionPolygon, setTaskRegionArea, removeMapTiles]);
 
-  // fly to centroid of region only once
+  /*** fly to centroid only once ***/
   useEffect(() => {
     if (taskStatus && taskRegionPolygon && !taskFirstFlyTo) {
       const regionCentroid = centroid(taskRegionPolygon);
@@ -246,14 +279,17 @@ const DemoMap: React.FC<Props> = ({ isMobile, isSidebarExpanded }) => {
           zIndex={888}
           display={isEyeInvisible ? "none" : "inherit"}
           position="absolute"
-          top="50px"
+          top="10px"
           left="10px"
           bg="offWhite"
           color="demoDark"
-          fontSize="1.7em"
           aria-label="Toggle map tiles"
           icon={showTiles ? <FiEye /> : <FiEyeOff />}
-          size="lg"
+          borderRadius="4px"
+          fontSize="1.4em"
+          width={["50px", "50px", "36px"]}
+          height={["50px", "50px", "36px"]}
+          minWidth="36px"
           onClick={toggleShowTiles}
         />
       )}

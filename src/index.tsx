@@ -8,6 +8,7 @@ import theme from "./chakraTheme";
 
 import "mapbox-gl/dist/mapbox-gl.css";
 import "@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css";
+import "@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
