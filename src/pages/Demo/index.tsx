@@ -23,7 +23,7 @@ const DemoPage: React.FC<Props> = () => {
   }, [paramTaskUid, setTaskUid]);
 
   useEffect(() => {
-    document.title = "Smart Carte | Demo Application";
+    document.title = "Smart Carte | Demo";
     window.scrollTo(0, 1);
   }, []);
 

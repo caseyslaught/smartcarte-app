@@ -41,27 +41,23 @@ const LegendRow: React.FC<LegendRowProps> = ({ className, percentage }) => {
   let color = "#000000";
   let name = className;
   switch (className) {
-    case "agriculture":
+    case "cultivated":
       color = "#D5A600";
-      name = "Agriculture";
+      name = "Cultivation";
       break;
-    case "bare_ground":
+    case "bare_natural":
       color = "#888888";
       name = "Bare ground";
       break;
-    case "built":
+    case "bare_artificial":
       color = "#FF0000";
       name = "Built";
-      break;
-    case "burned":
-      color = "#fc9c00";
-      name = "Burned";
       break;
     case "semi_natural_vegetation":
       color = "#45d620";
       name = "Natural vegetation";
       break;
-    case "trees":
+    case "woody":
       color = "#1e5e0e";
       name = "Trees";
       break;
@@ -69,19 +65,23 @@ const LegendRow: React.FC<LegendRowProps> = ({ className, percentage }) => {
       color = "#0566e6";
       name = "Water";
       break;
+    case "snow_ice":
+      color = "#cdddf7";
+      name = "Snow / ice";
+      break;
     default:
       break;
   }
 
   let percentageString = "";
   if (percentage || percentage === 0) {
-    percentageString = `${percentage.toFixed(2)}%`;
+    percentageString = `${(percentage * 100).toFixed(2)}%`;
   }
 
   return (
     <Flex justify="space-between" w="100%">
       <HStack align="center" justify="center">
-        <Square size="16px" bg={color} />
+        <Square size="16px" bg={color} borderRadius="sm" />
         <Text>{name}</Text>
       </HStack>
       <Text fontWeight="bold">{percentageString}</Text>

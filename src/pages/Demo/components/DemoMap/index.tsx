@@ -9,7 +9,7 @@ import React, {
 import mapboxgl, { Control, LngLat, Map } from "mapbox-gl";
 import MapboxDraw from "@mapbox/mapbox-gl-draw";
 import MapboxGeocoder from "@mapbox/mapbox-gl-geocoder";
-import { Box, IconButton } from "@chakra-ui/react";
+import { Box, Button } from "@chakra-ui/react";
 import { polygon } from "@turf/helpers";
 import area from "@turf/area";
 import centroid from "@turf/centroid";
@@ -37,12 +37,17 @@ interface Props {
   isSidebarExpanded: boolean;
 }
 
+const CLASSIFICATION_SOURCE = "classification-source";
+const CLASSIFICATION_LAYER = "classification-layer";
+
 const IMAGERY_SOURCE = "imagery-source";
 const IMAGERY_LAYER = "imagery-layer";
 
 const DemoMap: React.FC<Props> = ({ isMobile, isSidebarExpanded }) => {
-  const [showTiles, setShowTiles] = useState(true);
+  const [showImageryTiles, setShowImageryTiles] = useState(true);
+  const [showClassificationTiles, setShowClassificationTiles] = useState(true);
   const prevImageryTilesHref = useRef<string | null>(null);
+  const prevClassificationTilesHref = useRef<string | null>(null);
   const regionLayerId = useRef<string>("");
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<Map>(null) as MutableRefObject<Map>;
@@ -63,11 +68,13 @@ const DemoMap: React.FC<Props> = ({ isMobile, isSidebarExpanded }) => {
     setTaskFirstFlyTo,
     taskRegionPolygon,
     setTaskRegionArea,
+    taskClassificationTilesHref,
     taskImageryTilesHref,
     taskStatus,
   } = useDemo();
 
-  const addMapTiles = useCallback((tilesHref: string) => {
+  const addImageryTiles = useCallback((tilesHref: string) => {
+    // imagery
     map.current.addSource(IMAGERY_SOURCE, {
       scheme: "tms",
       type: "raster",
@@ -88,7 +95,29 @@ const DemoMap: React.FC<Props> = ({ isMobile, isSidebarExpanded }) => {
     );
   }, []);
 
-  const removeMapTiles = useCallback(() => {
+  const addClassificationTiles = useCallback((tilesHref: string) => {
+    // classification
+    map.current.addSource(CLASSIFICATION_SOURCE, {
+      scheme: "tms",
+      type: "raster",
+      tiles: [tilesHref],
+      tileSize: 256,
+    });
+
+    map.current.addLayer(
+      {
+        id: CLASSIFICATION_LAYER,
+        type: "raster",
+        source: CLASSIFICATION_SOURCE,
+        paint: {
+          "raster-opacity": 0.5,
+        },
+      },
+      "tunnel-minor-case"
+    );
+  }, []);
+
+  const removeImageryTiles = useCallback(() => {
     if (map.current.getLayer(IMAGERY_LAYER))
       map.current.removeLayer(IMAGERY_LAYER);
 
@@ -96,19 +125,46 @@ const DemoMap: React.FC<Props> = ({ isMobile, isSidebarExpanded }) => {
       map.current.removeSource(IMAGERY_SOURCE);
   }, []);
 
+  const removeClassificationTiles = useCallback(() => {
+    if (map.current.getLayer(CLASSIFICATION_LAYER))
+      map.current.removeLayer(CLASSIFICATION_LAYER);
+
+    if (map.current.getSource(CLASSIFICATION_SOURCE))
+      map.current.removeSource(CLASSIFICATION_SOURCE);
+  }, []);
+
+  // add imagery tiles
   useEffect(() => {
     if (map.current) {
       if (
         taskImageryTilesHref &&
         prevImageryTilesHref.current !== taskImageryTilesHref
       ) {
-        console.log("updating map tiles");
-        removeMapTiles();
-        if (taskImageryTilesHref) addMapTiles(taskImageryTilesHref);
+        removeImageryTiles();
+        if (taskImageryTilesHref) addImageryTiles(taskImageryTilesHref);
         prevImageryTilesHref.current = taskImageryTilesHref;
       }
     }
-  }, [taskImageryTilesHref, addMapTiles, removeMapTiles]);
+  }, [taskImageryTilesHref, addImageryTiles, removeImageryTiles]);
+
+  // add classification tiles
+  useEffect(() => {
+    if (map.current) {
+      if (
+        taskClassificationTilesHref &&
+        prevClassificationTilesHref.current !== taskClassificationTilesHref
+      ) {
+        removeClassificationTiles();
+        if (taskClassificationTilesHref)
+          addClassificationTiles(taskClassificationTilesHref);
+        prevClassificationTilesHref.current = taskClassificationTilesHref;
+      }
+    }
+  }, [
+    taskClassificationTilesHref,
+    addClassificationTiles,
+    removeClassificationTiles,
+  ]);
 
   /*** set up map ***/
   useEffect(() => {
@@ -237,10 +293,16 @@ const DemoMap: React.FC<Props> = ({ isMobile, isSidebarExpanded }) => {
         setTaskRegionArea(Math.round(regionArea / 1_000_000));
       }
     } else {
-      removeMapTiles();
+      removeImageryTiles();
+      removeClassificationTiles();
       draw.current.deleteAll();
     }
-  }, [taskRegionPolygon, setTaskRegionArea, removeMapTiles]);
+  }, [
+    taskRegionPolygon,
+    setTaskRegionArea,
+    removeImageryTiles,
+    removeClassificationTiles,
+  ]);
 
   /*** fly to centroid only once ***/
   useEffect(() => {
@@ -250,7 +312,7 @@ const DemoMap: React.FC<Props> = ({ isMobile, isSidebarExpanded }) => {
       const center = new LngLat(coords[0], coords[1]);
       map.current.flyTo({
         center: center,
-        zoom: 9,
+        // zoom: 9,
       });
 
       setTaskFirstFlyTo(true);
@@ -263,35 +325,59 @@ const DemoMap: React.FC<Props> = ({ isMobile, isSidebarExpanded }) => {
     setTaskFirstFlyTo,
   ]);
 
-  const toggleShowTiles = () => {
+  const toggleShowImageryTiles = () => {
     const tilesVisibility =
-      !showTiles && taskImageryTilesHref ? "visible" : "none";
+      !showImageryTiles && taskImageryTilesHref ? "visible" : "none";
     map.current.setLayoutProperty(IMAGERY_LAYER, "visibility", tilesVisibility);
-    setShowTiles(!showTiles);
+    setShowImageryTiles(!showImageryTiles);
+  };
+
+  const toggleShowClassificationTiles = () => {
+    const tilesVisibility =
+      !showClassificationTiles && taskClassificationTilesHref
+        ? "visible"
+        : "none";
+    map.current.setLayoutProperty(
+      CLASSIFICATION_LAYER,
+      "visibility",
+      tilesVisibility
+    );
+    setShowClassificationTiles(!showClassificationTiles);
   };
 
   const isEyeInvisible = isMobile && isSidebarExpanded;
 
   return (
     <>
-      {taskImageryTilesHref && (
-        <IconButton
+      {taskClassificationTilesHref && (
+        <Button
           zIndex={888}
           display={isEyeInvisible ? "none" : "inherit"}
           position="absolute"
           top="10px"
           left="10px"
-          bg="offWhite"
-          color="demoDark"
-          aria-label="Toggle map tiles"
-          icon={showTiles ? <FiEye /> : <FiEyeOff />}
-          borderRadius="4px"
-          fontSize="1.4em"
-          width={["50px", "50px", "36px"]}
-          height={["50px", "50px", "36px"]}
-          minWidth="36px"
-          onClick={toggleShowTiles}
-        />
+          variant="solid"
+          colorScheme="whiteAlpha"
+          leftIcon={showClassificationTiles ? <FiEye /> : <FiEyeOff />}
+          onClick={toggleShowClassificationTiles}
+        >
+          Land Cover
+        </Button>
+      )}
+      {taskImageryTilesHref && (
+        <Button
+          zIndex={888}
+          display={isEyeInvisible ? "none" : "inherit"}
+          position="absolute"
+          top="60px"
+          left="10px"
+          variant="solid"
+          colorScheme="whiteAlpha"
+          leftIcon={showImageryTiles ? <FiEye /> : <FiEyeOff />}
+          onClick={toggleShowImageryTiles}
+        >
+          Imagery
+        </Button>
       )}
       <Box ref={mapContainer} h="100%" w="100%" position="relative"></Box>
     </>

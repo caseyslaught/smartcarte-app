@@ -13,7 +13,7 @@ import { useNavigate } from "react-router-dom";
 import useDemo from "../../hooks/useDemo";
 import DemoTaskStatusBox from "../DemoTaskStatusBox";
 import DemoTaskParametersBox from "../DemoTaskParametersBox";
-// import DemoTaskLegendBox from "../DemoTaskLegendBox";
+import DemoTaskLegendBox from "../DemoTaskLegendBox";
 import DemoTaskDownloadBox from "../DemoTaskDownloadBox";
 import DemoFormContent from "../DemoFormContent";
 
@@ -69,7 +69,7 @@ const DemoSidebar: React.FC<Props> = ({
       <>
         <DemoTaskStatusBox />
         <DemoTaskParametersBox />
-        {/* <DemoTaskLegendBox /> */}
+        <DemoTaskLegendBox />
         {!isMobile && <DemoTaskDownloadBox />}
 
         <Button
@@ -104,7 +104,7 @@ const DemoSidebar: React.FC<Props> = ({
         position="fixed"
         top="50px"
         right="10px"
-        size="36px"
+        size={["50px", "50px", "36px"]}
         pointerEvents="auto"
       >
         <Spinner

@@ -52,7 +52,7 @@ const DemoTaskDownloadBox: React.FC<Props> = () => {
           </Button>
         </Link>
       )}
-      {/*taskClassificationHref && (
+      {taskClassificationHref && (
         <Link href={taskClassificationHref} download w="100%">
           <Button
             colorScheme="blue"
@@ -67,7 +67,7 @@ const DemoTaskDownloadBox: React.FC<Props> = () => {
             Download classification
           </Button>
         </Link>
-          )*/}
+      )}
     </VStack>
   );
 };
