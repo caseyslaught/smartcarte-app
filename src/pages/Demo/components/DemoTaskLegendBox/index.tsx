@@ -10,6 +10,10 @@ const DemoTaskLegendBox: React.FC<Props> = () => {
 
   if (!taskStatistics) return null;
 
+  const sortedClasses = Object.keys(taskStatistics).sort((a, b) =>
+    taskStatistics[a].percent_masked > taskStatistics[b].percent_masked ? -1 : 1
+  );
+
   return (
     <VStack
       p="1em"
@@ -19,7 +23,7 @@ const DemoTaskLegendBox: React.FC<Props> = () => {
       borderRadius="md"
       pointerEvents="auto"
     >
-      {Object.keys(taskStatistics).map((className) => {
+      {sortedClasses.map((className) => {
         return (
           <LegendRow
             key={className}
@@ -42,27 +46,27 @@ const LegendRow: React.FC<LegendRowProps> = ({ className, percentage }) => {
   let name = className;
   switch (className) {
     case "cultivated":
-      color = "#D5A600";
+      color = "#d9c30a";
       name = "Cultivation";
       break;
     case "bare_natural":
-      color = "#888888";
+      color = "#9e9e91";
       name = "Bare ground";
       break;
     case "bare_artificial":
-      color = "#FF0000";
+      color = "#b0051f";
       name = "Built";
       break;
     case "semi_natural_vegetation":
-      color = "#45d620";
+      color = "#3fcc52";
       name = "Natural vegetation";
       break;
     case "woody":
-      color = "#1e5e0e";
+      color = "#135c2e";
       name = "Trees";
       break;
     case "water":
-      color = "#0566e6";
+      color = "#067cd6";
       name = "Water";
       break;
     case "snow_ice":

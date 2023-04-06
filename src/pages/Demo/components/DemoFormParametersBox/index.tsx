@@ -66,7 +66,7 @@ const DemoFormParametersBox: React.FC<Props> = ({ handleDraw }) => {
           value="landcover-classification"
         >
           <option value="landcover-classification">
-            landcover classification
+            land cover classification
           </option>
         </Select>
       </FormControl>

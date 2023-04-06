@@ -18,7 +18,7 @@ const DemoTaskParametersBox: React.FC<Props> = () => {
   let taskTypeText = "";
   switch (taskType) {
     case "demo_classification":
-      taskTypeText = "landcover classification";
+      taskTypeText = "land cover classification";
       break;
     default:
       taskTypeText = "Unknown";
