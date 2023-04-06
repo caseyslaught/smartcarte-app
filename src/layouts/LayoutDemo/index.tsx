@@ -104,7 +104,7 @@ const LayoutDemo: React.FC<Props> = () => {
                   </Tr>
                 </Tbody>
                 <TableCaption>
-                  This a demo so please bare with us if you encounter any issues
+                  This a demo so please bear with us if you encounter any issues
                   🙃
                 </TableCaption>
               </Table>
