@@ -45,7 +45,7 @@ const IMAGERY_LAYER = "imagery-layer";
 
 const DemoMap: React.FC<Props> = ({ isMobile, isSidebarExpanded }) => {
   const [showImageryTiles, setShowImageryTiles] = useState(true);
-  const [showClassificationTiles, setShowClassificationTiles] = useState(true);
+  const [showClassificationTiles, setShowClassificationTiles] = useState(false);
   const prevImageryTilesHref = useRef<string | null>(null);
   const prevClassificationTilesHref = useRef<string | null>(null);
   const regionLayerId = useRef<string>("");
@@ -115,6 +115,9 @@ const DemoMap: React.FC<Props> = ({ isMobile, isSidebarExpanded }) => {
       },
       "tunnel-minor-case"
     );
+
+    // hidden by default at first
+    map.current.setLayoutProperty(CLASSIFICATION_LAYER, "visibility", "none");
   }, []);
 
   const removeImageryTiles = useCallback(() => {
