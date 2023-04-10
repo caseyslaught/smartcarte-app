@@ -19,6 +19,7 @@ const useTask = ({ taskUid, paramTaskUid }: Props) => {
     setTaskLoading,
     setTaskFirstLoaded,
     setTaskType,
+    setTaskSlug,
     setTaskDate,
     setTaskEmail,
     setTaskStatus,
@@ -55,6 +56,7 @@ const useTask = ({ taskUid, paramTaskUid }: Props) => {
         if (res.status === 200) {
           const task = res.data;
           setTaskType(task.type);
+          setTaskSlug(task.slug);
           setTaskEmail(task.email);
           setTaskStatus(task.status);
           setTaskStatusMessage(task.status_message);
@@ -73,7 +75,6 @@ const useTask = ({ taskUid, paramTaskUid }: Props) => {
           const regionArea = Math.round(area(regionPolygon) / 1000000);
           setTaskRegionPolygon(regionPolygon);
           setTaskRegionArea(regionArea);
-
           setTaskFirstLoaded(true);
         }
       } catch (error: any) {
@@ -122,6 +123,7 @@ const useTask = ({ taskUid, paramTaskUid }: Props) => {
     setTaskRegionPolygon,
     setTaskDate,
     setTaskType,
+    setTaskSlug,
     setTaskStatistics,
     setTaskImageryHref,
     setTaskImageryTilesHref,

@@ -23,7 +23,7 @@ const StaticMode = require("@mapbox/mapbox-gl-draw-static-mode");
 const DrawRectangle = require("mapbox-gl-draw-rectangle-restrict-area").default;
 
 // constants
-const MAX_ZOOM = 14;
+const MAX_ZOOM = 22;
 
 // @ts-ignore
 mapboxgl.workerClass =
@@ -39,6 +39,9 @@ interface Props {
 
 const CLASSIFICATION_SOURCE = "classification-source";
 const CLASSIFICATION_LAYER = "classification-layer";
+
+const DRONE_SOURCE = "drone-source";
+const DRONE_LAYER = "drone-layer";
 
 const IMAGERY_SOURCE = "imagery-source";
 const IMAGERY_LAYER = "imagery-layer";
@@ -71,7 +74,32 @@ const DemoMap: React.FC<Props> = ({ isMobile, isSidebarExpanded }) => {
     taskClassificationTilesHref,
     taskImageryTilesHref,
     taskStatus,
+    taskSlug,
   } = useDemo();
+
+  const addDroneTiles = useCallback(() => {
+    // drone
+    map.current.addSource("drone-source", {
+      scheme: "tms",
+      type: "raster",
+      tiles: [
+        "https://data.smartcarte.earth/orthomosaics/kinyonzo_hippos_tiles/{z}/{x}/{y}.png",
+      ],
+      tileSize: 256,
+    });
+
+    map.current.addLayer(
+      {
+        id: "drone-layer",
+        type: "raster",
+        source: "drone-source",
+        paint: {
+          "raster-opacity": 1.0,
+        },
+      },
+      "tunnel-minor-case"
+    );
+  }, []);
 
   const addImageryTiles = useCallback((tilesHref: string) => {
     // imagery
@@ -120,6 +148,12 @@ const DemoMap: React.FC<Props> = ({ isMobile, isSidebarExpanded }) => {
     map.current.setLayoutProperty(CLASSIFICATION_LAYER, "visibility", "none");
   }, []);
 
+  const removeDroneTiles = useCallback(() => {
+    if (map.current.getLayer(DRONE_LAYER)) map.current.removeLayer(DRONE_LAYER);
+    if (map.current.getSource(DRONE_SOURCE))
+      map.current.removeSource(DRONE_SOURCE);
+  }, []);
+
   const removeImageryTiles = useCallback(() => {
     if (map.current.getLayer(IMAGERY_LAYER))
       map.current.removeLayer(IMAGERY_LAYER);
@@ -149,6 +183,17 @@ const DemoMap: React.FC<Props> = ({ isMobile, isSidebarExpanded }) => {
       }
     }
   }, [taskImageryTilesHref, addImageryTiles, removeImageryTiles]);
+
+  // add drone tiles
+  useEffect(() => {
+    if (map.current) {
+      if (taskSlug?.startsWith("virunga")) {
+        console.log("adding drone tiles");
+        removeDroneTiles();
+        addDroneTiles();
+      }
+    }
+  }, [taskSlug, addDroneTiles, removeDroneTiles]);
 
   // add classification tiles
   useEffect(() => {
@@ -290,13 +335,13 @@ const DemoMap: React.FC<Props> = ({ isMobile, isSidebarExpanded }) => {
     if (taskRegionPolygon) {
       if (regionLayerId.current === "") {
         const drawIds = draw.current.add(taskRegionPolygon);
-        console.log("drawId", drawIds[0]);
         regionLayerId.current = drawIds[0];
         const regionArea = area(taskRegionPolygon);
         setTaskRegionArea(Math.round(regionArea / 1_000_000));
       }
     } else {
       removeImageryTiles();
+      removeDroneTiles();
       removeClassificationTiles();
       draw.current.deleteAll();
     }
@@ -304,6 +349,7 @@ const DemoMap: React.FC<Props> = ({ isMobile, isSidebarExpanded }) => {
     taskRegionPolygon,
     setTaskRegionArea,
     removeImageryTiles,
+    removeDroneTiles,
     removeClassificationTiles,
   ]);
 

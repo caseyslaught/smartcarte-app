@@ -65,6 +65,9 @@ export interface DemoStateType {
   taskStatusLongMessage: string;
   setTaskStatusLongMessage: (statusLongMessage: string) => void;
 
+  taskSlug: string | null;
+  setTaskSlug: (slug: string | null) => void;
+
   taskDate: Date | null;
   setTaskDate: (date: Date | null) => void;
 
@@ -150,6 +153,7 @@ export const DemoStateProvider: React.FC<Props> = ({ children }) => {
   const [taskStatusLongMessage, setTaskStatusLongMessage] =
     useState<string>("");
   const [taskType, setTaskType] = useState<string>("");
+  const [taskSlug, setTaskSlug] = useState<string | null>(null);
   const [taskDate, setTaskDate] = useState<Date | null>(null);
   const [taskEmail, setTaskEmail] = useState<string>("");
   const [taskRegionPolygon, setTaskRegionPolygon] = useState<Feature<
@@ -196,6 +200,7 @@ export const DemoStateProvider: React.FC<Props> = ({ children }) => {
     setTaskStatusMessage(DEFAULT_TASK_STATUS_MESSAGE);
     setTaskStatusLongMessage("");
     setTaskType("");
+    setTaskSlug(null);
     setTaskDate(null);
     setTaskEmail("");
     setTaskRegionPolygon(null);
@@ -247,6 +252,8 @@ export const DemoStateProvider: React.FC<Props> = ({ children }) => {
     setTaskStatusMessage,
     taskStatusLongMessage,
     setTaskStatusLongMessage,
+    taskSlug,
+    setTaskSlug,
     taskDate,
     setTaskDate,
     taskEmail,
