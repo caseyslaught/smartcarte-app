@@ -361,7 +361,7 @@ const DemoMap: React.FC<Props> = ({ isMobile, isSidebarExpanded }) => {
       const center = new LngLat(coords[0], coords[1]);
       map.current.flyTo({
         center: center,
-        // zoom: 9,
+        zoom: 9,
       });
 
       setTaskFirstFlyTo(true);
