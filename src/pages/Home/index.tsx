@@ -11,7 +11,7 @@ const HomePage: React.FC<Props> = () => {
   const [isWaitlistOpen, setIsWaitlistOpen] = React.useState(false);
 
   useEffect(() => {
-    document.title = "Smart Carte | Landscape Intelligence Platform";
+    document.title = "Smart Carte | Cloud-Free Sentinel-2 Imagery";
   }, []);
 
   return (
@@ -46,14 +46,17 @@ const HomePage: React.FC<Props> = () => {
         >
           <Heading
             size="4xl"
+            lineHeight="1.1em"
             bgClip="text"
             bgGradient="linear(to-r, white, blue.100)"
+            pb="10px"
           >
-            Assess land cover changes in real time
+            Analysis ready satellite imagery
           </Heading>
           <Text fontSize={["lg", "xl"]}>
-            Gain insights into the health of protected forests and grasslands
-            with intuitive land cover classification and change detection tools.
+            Access cloud-free imagery worldwide. We handle tedious and
+            computationally-intensive preprocessing steps so you can get started
+            with your unique analysis right away.
           </Text>
           <Button
             colorScheme="whiteAlpha"
@@ -64,7 +67,7 @@ const HomePage: React.FC<Props> = () => {
               if (!isWaitlistOpen) setIsWaitlistOpen(true);
             }}
           >
-            Join the waitlist
+            Follow our progress
           </Button>
         </VStack>
 

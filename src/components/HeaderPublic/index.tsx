@@ -18,7 +18,7 @@ const HeaderPublic: React.FC<Props> = () => {
         variant="solid"
         rightIcon={<FiArrowRight />}
       >
-        Try demo
+        Get started
       </Button>
     </Link>
   );

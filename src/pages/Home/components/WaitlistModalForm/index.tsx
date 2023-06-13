@@ -99,8 +99,8 @@ const WaitlistModalForm: React.FC<Props> = ({
             >
               <Heading>You're all set!</Heading>
               <Text align="center" maxW={["100%", "100%", "80%"]}>
-                Thanks for signing up for our waitlist. We will keep you posted
-                about release dates and other developments via email.
+                Thanks for signing up to our update list. We will keep you
+                posted about new features and other developments via email.
               </Text>
               <Icon as={FiCheckCircle} boxSize={20} color="green.600" />
             </VStack>
@@ -114,7 +114,7 @@ const WaitlistModalForm: React.FC<Props> = ({
     <Modal isOpen={isModalOpen} size="lg" onClose={() => setIsModalOpen(false)}>
       <ModalOverlay />
       <ModalContent color="gray.600" mx={2} my={[2, 16]}>
-        <ModalHeader fontSize="1.4em">Join our waitlist</ModalHeader>
+        <ModalHeader fontSize="1.4em">Follow our progress</ModalHeader>
         <ModalCloseButton size="lg" />
         <ModalBody>
           <form>
@@ -170,7 +170,9 @@ const WaitlistModalForm: React.FC<Props> = ({
                   <option value="agriculture">Agriculture</option>
                   <option value="conservation">Conservation</option>
                   <option value="energy">Energy</option>
-                  <option value="development">International Development</option>
+                  <option value="development">International development</option>
+                  <option value="mining">Mining</option>
+                  <option value="nonprofit">Non-profit</option>
                   <option value="other">Other</option>
                 </Select>
               </FormControl>
@@ -182,10 +184,11 @@ const WaitlistModalForm: React.FC<Props> = ({
                   placeholder="Select an feature"
                   onChange={form.handleChange}
                 >
-                  <option value="burn">Burn area management</option>
-                  <option value="forest">Forest monitoring</option>
-                  <option value="lulc">Land use / land cover change</option>
-                  <option value="water">Water quality monitoring</option>
+                  <option value="agriculture">Agricultural monitoring</option>
+                  <option value="disaster">Disaster response</option>
+                  <option value="education">Education</option>
+                  <option value="env_mon">Environmental monitoring</option>
+                  <option value="urban">Urban planning</option>
                   <option value="other">Other</option>
                 </Select>
               </FormControl>

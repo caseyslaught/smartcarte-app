@@ -6,6 +6,8 @@ import FooterPublic from "../../components/FooterPublic";
 import HeaderPublic from "../../components/HeaderPublic";
 import useAuth from "../../hooks/useAuth";
 
+import Topography from "../../assets/images/topography.svg";
+
 interface Props {}
 
 const LayoutPublic: React.FC<Props> = () => {
@@ -23,7 +25,13 @@ const LayoutPublic: React.FC<Props> = () => {
   if (token) return <></>;
 
   return (
-    <VStack w="100%" overflowX="hidden" spacing={0}>
+    <VStack
+      bg="background"
+      bgImage={Topography}
+      w="100%"
+      overflowX="hidden"
+      spacing={0}
+    >
       <Modal isOpen={loginLoading || registerLoading} onClose={() => {}}>
         <ModalOverlay />
       </Modal>

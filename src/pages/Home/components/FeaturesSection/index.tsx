@@ -7,18 +7,18 @@ import ProcessingIcon from "../../../../assets/images/feature_preprocessing.png"
 
 const text = [
   {
-    title: "Comprehensive Preprocessing",
-    text: "Receive high quality, cloud-free satellite imagery for your region of interest. We handle cloud masking, normalization, and mosaicking of 10-meter resolution imagery.",
-    icon: ProcessingIcon,
-  },
-  {
-    title: "Timely Change Detection",
-    text: "Models detect changes to your region of interest in near real-time, allowing you to quickly respond to threats like deforestation and illegal mining.",
+    title: "Cloud Detection",
+    text: "Imagery is scanned for clouds and other problematic pixels using neural network models, ensuring that results are ready for analysis.",
     icon: ChangeIcon,
   },
   {
-    title: "Seamless Mobile Integration",
-    text: "Take important insights into the field with you with the geolocated mobile version so you can easily navigate to problem areas identified by change detection models.",
+    title: "Cloud Processing",
+    text: "We access and process imagery using scalable cloud services, enabling tasks that process dozens of raw images and study areas of up to 5000 km2.",
+    icon: ProcessingIcon,
+  },
+  {
+    title: "Simple Web Interface",
+    text: "Our interface is built to be intuitive for non-technical users. Results can also be viewed easily on mobile devices to help with field work.",
     icon: MobileIcon,
   },
 ];
@@ -30,10 +30,9 @@ const FeaturesSection: React.FC<SectionProps> = () => {
     <Flex
       align="center"
       justify="center"
-      bg="backgroundLight"
       color="offWhite"
       w="100%"
-      px={4}
+      px={6}
       py={[8, 8, 16]}
     >
       <Stack
